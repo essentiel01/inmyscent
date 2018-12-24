@@ -26,7 +26,7 @@ class Product
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $sex;
+    private $gender;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -45,19 +45,33 @@ class Product
     private $brand;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $topNotes;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\FamilyNote", inversedBy="products")
+     * @ORM\Column(type="string", length=255)
      */
-    private $familyNote;
+    private $familyNotes;
 
-    public function __construct()
-    {
-        $this->familyNote = new ArrayCollection();
-    }
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $baseNotes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $heartNotes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $notes;
+
+    
+
+    
 
     public function getId(): ?int
     {
@@ -81,9 +95,9 @@ class Product
         return $this->sex;
     }
 
-    public function setSex(string $sex): self
+    public function setSex(string $gender): self
     {
-        $this->sex = $sex;
+        $this->sex = $gender;
 
         return $this;
     }
@@ -136,28 +150,51 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|FamilyNote[]
-     */
-    public function getFamilyNote(): Collection
+   
+    public function getFamilyNotes(): ?string
     {
-        return $this->familyNote;
+        return $this->familyNotes;
     }
 
-    public function addFamilyNote(FamilyNote $familyNote): self
+    public function setFamilyNotes(string $familyNotes): self
     {
-        if (!$this->familyNote->contains($familyNote)) {
-            $this->familyNote[] = $familyNote;
-        }
+        $this->familyNotes = $familyNotes;
 
         return $this;
     }
 
-    public function removeFamilyNote(FamilyNote $familyNote): self
+    public function getBaseNotes(): ?string
     {
-        if ($this->familyNote->contains($familyNote)) {
-            $this->familyNote->removeElement($familyNote);
-        }
+        return $this->baseNotes;
+    }
+
+    public function setBaseNotes(?string $baseNotes): self
+    {
+        $this->baseNotes = $baseNotes;
+
+        return $this;
+    }
+
+    public function getHeartNotes(): ?string
+    {
+        return $this->heartNotes;
+    }
+
+    public function setHeartNotes(?string $heartNotes): self
+    {
+        $this->heartNotes = $heartNotes;
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
 
         return $this;
     }

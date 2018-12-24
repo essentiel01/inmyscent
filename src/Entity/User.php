@@ -36,6 +36,11 @@ class User
      */
     private $email;
 
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $gender;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class User
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
 
         return $this;
     }
