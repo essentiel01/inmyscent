@@ -90,14 +90,14 @@ class Product
         return $this;
     }
 
-    public function getSex(): ?string
+    public function getGender(): ?string
     {
-        return $this->sex;
+        return $this->gender;
     }
 
-    public function setSex(string $gender): self
+    public function setGender(string $gender): self
     {
-        $this->sex = $gender;
+        $this->gender = $gender;
 
         return $this;
     }
