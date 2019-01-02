@@ -4,3 +4,7 @@
 home:
   path: /
   controller: App\Controller\HomeController::index
+
+ajaxGetBrands:
+  path: /get-brands/all/
+  controller: App\Controller\HomeController::getBrands
