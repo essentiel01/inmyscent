@@ -67,10 +67,7 @@ class HomeController extends AbstractController
                     'message' => 'fall to load autocomplete data'], 'json');
                 return new JsonResponse($error, 200, [], true);
             }
-
         }
-        
-        
     }
 
     /**
