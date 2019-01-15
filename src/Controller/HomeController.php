@@ -40,7 +40,7 @@ class HomeController extends AbstractController
      *
      * @return void
      */
-    public function getBrands() {
+    public function brands() {
         if ($this->cache->has('brands')) {
             return new JsonResponse($brands, 200, [], true);
         } else {
@@ -68,6 +68,10 @@ class HomeController extends AbstractController
                 return new JsonResponse($error, 200, [], true);
             }
         }
+    }
+
+    public function products($id, $name) {
+
     }
 
     /**
