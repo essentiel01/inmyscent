@@ -5,25 +5,27 @@ $(document).ready(function() {
     ---------------------------*/
   var brands = [];
     // requete ajax
-    $.get( "http://localhost/inmyscent/public/index.php/get-brands/all/", function( data ) {
-
-    if (data.success == undefined) {
+    $.get( "http://localhost/inmyscent/public/index.php/brands", function( data ) {
+      if (data.success == undefined) {
         $( data ).each(function( index , value) {
           brands.push(value.name);
         });
       }
 
       if (data.success == false) {
-        $('#brands').focus(function(e) {
+        $(this).focus(function(e) {
           var div = $(this).after('<div class="alert alert-danger" id="error-message"></div>');
           $(this).parent().children('div').text(data.message);
         });
 
-        $('#brands').blur(function(e) {
+        $('#brand').blur(function(e) {
           $(this).parent().children('#error-message').remove();
         });
       }
     });
+
+
+    
 
     // autocompletion
     $( function() {
