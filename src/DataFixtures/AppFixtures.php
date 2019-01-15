@@ -23,13 +23,16 @@ class AppFixtures extends Fixture
         foreach ($brands as $v) {
             $brand = new Brand();
             $brand->setName($v);
+            $brand->setSlug();
             $manager->persist($brand);
 
 
             for($i=0; $i<2; $i++){
                 
                 $product = new Product();
-                $product->setName($faker->word)
+                $name = $faker->word;
+                $product->setName($name)
+                        ->setSlug()
                         ->setBrand($brand)
                         ->setType("eau de toilette")
                         ->setGender("female")
