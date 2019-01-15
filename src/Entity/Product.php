@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -69,8 +70,13 @@ class Product
      */
     private $notes;
 
-    
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
+    
+    
     
 
     public function getId(): ?int
@@ -195,6 +201,19 @@ class Product
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(): self
+    {
+        $slugify = new Slugify();
+        $this->slug = $slugify->slugify($this->getName());
 
         return $this;
     }

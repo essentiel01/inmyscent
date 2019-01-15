@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BrandRepository")
@@ -27,6 +29,13 @@ class Brand
      * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="brand")
      */
     private $products;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    
 
     public function __construct()
     {
@@ -77,6 +86,19 @@ class Brand
                 $product->setBrand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(): self
+    {
+        $slugify = new Slugify();
+        $this->slug = $slugify->slugify($this->getName());
 
         return $this;
     }
