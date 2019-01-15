@@ -5,6 +5,10 @@ home:
   path: /
   controller: App\Controller\HomeController::index
 
-ajaxGetBrands:
-  path: /get-brands/all/
-  controller: App\Controller\HomeController::getBrands
+api-brands:
+  path: brands/
+  controller: App\Controller\HomeController::brands
+
+api-products:
+  path: /products/{id}/{slug}
+  controller: App\Controller\HomeController::products
