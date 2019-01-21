@@ -36,6 +36,18 @@ class ProductRepository extends ServiceEntityRepository
     }
     */
 
+    public function findByBrandId($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.brand', 'b')
+            ->where('b.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('p.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /*
     public function findOneBySomeField($value): ?Product
     {
