@@ -10,5 +10,5 @@ api-brands:
   controller: App\Controller\HomeController::brands
 
 api-products:
-  path: /products/{id}/{slug}
+  path: /products
   controller: App\Controller\HomeController::products
