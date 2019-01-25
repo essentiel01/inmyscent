@@ -1,12 +1,11 @@
 $(document).ready(function() {
-
   /* ----------------
     autocompletion du champ brand
     ---------------------------*/
   var brandsName = [];
   var brands = [];
     // requete ajax
-    $.get( "http://localhost/inmyscent/public/index.php/brands", function( data ) {
+    $.get( "././index.php/brands", function( data ) {
       if (data.success == undefined) {
         $( data ).each(function( index , value) {
           brands.push(value);
@@ -40,50 +39,68 @@ $(document).ready(function() {
     /* ----------------
     autocompletion du champ product
     ---------------------------*/
-    var brandSlug, brandId;
-    var products = [];
-    
+    var productsName = [];
+
     $("#brand").change(function(){
       
-      if($("#brand").val() != null || $("#brand").val() != " ") {
-        for (var b of brands) {
-          if (b.name == $("#brand").val()){
-            brandSlug = b.slug;
-            brandId = b.id;
-            
-            // requete ajax
-            $.get( "http://localhost/inmyscent/public/index.php/products/"+brandId+"/"+brandSlug, function( data ) {
-              
-              if (data.success == undefined) {
-                // vide la variable products
-                products.splice(0, products.length);
-                // assigne les nouvelles valeurs à products
-                $( data ).each(function( index , value) {
-                  products.push(value.name);
-                });
-              } else if (data.success == false) {
-                  var div = $('#product').after('<div class="alert alert-warning" id="product-error-message"></div>');
-                  $('#product').parent().children('div').text(data.message);
+        var brandName = $("#brand").val();
+        brandName = brandName.trim();
 
-                  $('#product').focus(function(e) {
-                  var div = $(this).after('<div class="alert alert-warning" id="product-error-message"></div>');
-                  $(this).parent().children('div').text(data.message);
-                  });
-        
-                  $('#product').blur(function(e) {
-                    $(this).parent().children('#product-error-message').remove();
-                  });
+        if (brandName) {
+          $.ajax(
+              {
+                  url: "././index.php/products",
+                  method: "POST",
+                  dataType: "json",
+                  data: { brandName: brandName }
               }
-            });
-            // autocompletion
-            $( function() {
-              $( "#product" ).autocomplete({
-                source: products
+          ).done(function(data) {
+
+            if (data.success == undefined) {
+              // vide les variables products et productsName
+              productsName.splice(0, productsName.length);
+  
+              // assigne les nouvelles valeurs à products et productsName
+              $( data ).each(function( index , value) {
+                productsName.push(value.name);
               });
-            });
-          } 
-        }
+
+            } else if (data.success == false && data.type == 'fail') {
+
+                var div = $('#product').after('<div class="alert alert-warning" id="product-error-message"></div>');
+                $('#product').parent().children('div').text(data.message);
+  
+                $('#product').focus(function(e) {
+                var div = $(this).after('<div class="alert alert-warning" id="product-error-message"></div>');
+                $(this).parent().children('div').text(data.message);
+                });
+      
+                $('#product').blur(function(e) {
+                  $(this).parent().children('#product-error-message').remove();
+                });
+
+            } else if (data.success == false && data.type == 'not found') {
+              // vide les variables products et productsName
+              productsName.splice(0, productsName.length);
+            }
+
+          }).fail(function(error) {
+              console.log(error);
+          });
+          
+      } else {
+        // vide les variables products et productsName
+        productsName.splice(0, productsName.length);
       }
+      
+       
+        // autocompletion
+        $( function() {
+          $( "#product" ).autocomplete({
+            source: productsName
+          });
+        });
+
     });
     
     
