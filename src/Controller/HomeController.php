@@ -6,6 +6,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -44,14 +45,18 @@ class HomeController extends AbstractController
      */
     public function brands() {
 
-        if ($this->cache->has('brands')) {
+        if ($this->cache->has('brands')) 
+        {
             return new JsonResponse($this->cache->get('brands'), 200, [], true);
-        } else {
+        } 
+        else 
+        {
 
             try {
                 $brands = $this->getDoctrine()->getRepository(Brand::class)->findAll();
             
-                if ($brands) {
+                if ($brands) 
+                {
                     // converti au format json
                     $brands = $this->serializer('brand')->serialize($brands, 'json');
                     // met réusltat en cache
@@ -59,7 +64,9 @@ class HomeController extends AbstractController
 
                     return new JsonResponse($brands, 200, [], true);
                 }   
-            } catch(\Exception $e) {
+            } 
+            catch(\Exception $e) 
+            {
                 $error = $this->serializer()->serialize(['success' => false,
                     'message' => 'fall to load autocomplete data'], 'json');
                 return new JsonResponse($error, 200, [], true);
@@ -70,28 +77,44 @@ class HomeController extends AbstractController
     /**
      * retourne les produits de la marque spécifiée
      *
-     * @param Int $id id de la marque
-     * @param String $slug slug de la marque
+     * @param Request $request objet request
      * @return JsonResponse liste des produits ou un message d'erreur au format json
      */
-    public function products($id, $slug) {
+    public function products(Request $request) {
+        
+        $brandName = strip_tags($request->request->get('brandName'));
 
-        if($this->cache->has($slug)) {
-            return new JsonResponse($this->cache->get($slug), 200, [], true);
-         } else {
-            try {
-                $products = $this->getDoctrine()->getRepository(Product::class)->findByBrandId($id);
+        if($this->cache->has($brandName)) 
+        {
+            return new JsonResponse($this->cache->get($brandName), 200, [], true);
+        } 
+        else 
+        {
+            try 
+            {
+                $products = $this->getDoctrine()->getRepository(Product::class)->findByBrandName($brandName);
             
-                if ($products) {
+                if ($products) 
+                {
                     // converti au format json
                     $products = $this->serializer('brand')->serialize($products, 'json');
                     // met réusltat en cache
-                    $this->cache->set($slug, $products, 3600);
+                    $this->cache->set($brandName, $products, 3600);
                     dump($products);
                     return new JsonResponse($products, 200, [], true);
                 } 
-            } catch (\Exception $e) {
+                else 
+                {
+                    $error = $this->serializer()->serialize(['success' => false,
+                    'type' => 'not found',
+                    'message' => 'no products found'], 'json');
+                    return new JsonResponse($error, 200, [], true);
+                }
+            } 
+            catch (\Exception $e) 
+            {
                 $error = $this->serializer()->serialize(['success' => false,
+                    'type' => 'fail',
                     'message' => 'fall to load autocomplete data'], 'json');
                 return new JsonResponse($error, 200, [], true);
             }
@@ -108,9 +131,12 @@ class HomeController extends AbstractController
        
         $encoders = array(new JsonEncoder());
         
-        if  ($entityName != '') {
+        if  ($entityName != '') 
+        {
             $normalizers = array((new ObjectNormalizer())->setIgnoredAttributes([$entityName]));
-        } else {
+        } 
+        else 
+        {
             $normalizers = array(new ObjectNormalizer());
         }
             
