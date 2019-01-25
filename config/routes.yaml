@@ -5,10 +5,10 @@ home:
   path: /
   controller: App\Controller\HomeController::index
 
-api-brands:
+ajax-brands:
   path: brands/
   controller: App\Controller\HomeController::brands
 
-api-products:
+ajax-products:
   path: /products
   controller: App\Controller\HomeController::products
