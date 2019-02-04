@@ -34,7 +34,7 @@ class HomeController extends AbstractController
     {
         // $this->cache->clear();
         return $this->render('home/index.html.twig', [
-                    'title' => 'InMyScent',
+                    'title' => 'InMyScent'
                     ]);
     }
 
@@ -121,6 +121,46 @@ class HomeController extends AbstractController
         }
     }
 
+
+    public function search(Request $request) {
+        $brandName  = $this->_isValid( $request->request->get('brand') );
+        $productName  = $this->_isValid( $request->request->get('product') );
+       $param = $this->serializer()->serialize(['brand' => $brandName,
+                    'product' => $productName
+                    ], 'json');
+                return new JsonResponse($param, 200, [], true);
+    }
+
+
+    /**
+     * nettoie les données provenant du formulaire de recherche
+     *
+     * @param Mixed $data
+     * @return void
+     */
+    private function _isValid($data) {
+        if (is_array($data) || is_object($data))
+        {
+            foreach ($data as &$v)
+            {
+                strip_tags($v);
+                stripslashes($v);
+                trim($v);
+            }
+
+            unset($v);
+            return $data;
+        } 
+        else 
+        {
+            $data = strip_tags($data);
+            $data = stripslashes($data);
+            $data = trim($data); 
+
+            return $data;
+        }        
+    }
+    
     /**
      * objet serializer
      *
