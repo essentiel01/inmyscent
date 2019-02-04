@@ -12,3 +12,7 @@ ajax-brands:
 ajax-products:
   path: /products
   controller: App\Controller\HomeController::products
+
+ajax-search:
+  path: /search
+  controller: App\Controller\HomeController::search
