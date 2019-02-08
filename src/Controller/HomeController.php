@@ -14,15 +14,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Brand;
 use App\Entity\Product;
 
-use Symfony\Component\Cache\Simple\FilesystemCache;
-
+// use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class HomeController extends AbstractController
 {
-    private $cache;
+    
+    private $_cache;
 
     public function __construct() {
-        $this->cache = new FilesystemCache('homePage');
+        // $this->_cache = new FilesystemCache();
+        $this->_cache = new FilesystemAdapter();
     }
    
     /**
@@ -32,7 +34,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        // $this->cache->clear();
+        
         return $this->render('home/index.html.twig', [
                     'title' => 'InMyScent'
                     ]);
@@ -44,10 +46,11 @@ class HomeController extends AbstractController
      * @return JsonResponse la liste de toutes les marque
      */
     public function brands() {
-
-        if ($this->cache->has('brands')) 
+        if ($this->_cache->hasItem('brandList')) 
         {
-            return new JsonResponse($this->cache->get('brands'), 200, [], true);
+            $brandList = $this->_cache->getItem('brandList');
+
+            return new JsonResponse($brandList->get(), 200, [], true);
         } 
         else 
         {
@@ -58,16 +61,19 @@ class HomeController extends AbstractController
                 if ($brands) 
                 {
                     // converti au format json
-                    $brands = $this->serializer('brand')->serialize($brands, 'json');
+                    $brands = $this->_serializer('brand')->serialize($brands, 'json');
                     // met réusltat en cache
-                    $this->cache->set('brands', $brands, 3600);
+                    $brandList = $this->_cache->getItem("brandList");
+                    $brandList->set($brands);
+                    $this->_cache->save($brandList);
+                    // $this->_cache->set('brands', $brands, 3600);
 
                     return new JsonResponse($brands, 200, [], true);
                 }   
             } 
             catch(\Exception $e) 
             {
-                $error = $this->serializer()->serialize(['success' => false,
+                $error = $this->_serializer()->serialize(['success' => false,
                     'message' => 'fall to load autocomplete data'], 'json');
                 return new JsonResponse($error, 200, [], true);
             }
@@ -82,30 +88,35 @@ class HomeController extends AbstractController
      */
     public function products(Request $request) {
         
-        $brandName = strip_tags($request->request->get('brandName'));
-
-        if($this->cache->has($brandName)) 
+        $brandName = $this->_isValid($request->request->get('brandName'));
+       
+        //$this->_cache->deleteItem($brandName.'_productList');
+        if($this->_cache->hasItem($brandName.'_productList')) 
         {
-            return new JsonResponse($this->cache->get($brandName), 200, [], true);
+            $products = $this->_cache->getItem($brandName.'_productList')->get();
+            return new JsonResponse($products, 200, [], true);
         } 
         else 
         {
             try 
             {
-                $products = $this->getDoctrine()->getRepository(Product::class)->findByBrandName($brandName);
-            
+                $products = $this->getDoctrine()->getRepository(Product::class)->findByBrand($brandName);
+
                 if ($products) 
                 {
                     // converti au format json
-                    $products = $this->serializer('brand')->serialize($products, 'json');
+                    $products = $this->_serializer('brand')->serialize($products, 'json');
                     // met réusltat en cache
-                    $this->cache->set($brandName, $products, 3600);
-                    dump($products);
+                    $productList = $this->_cache->getItem($brandName.'_productList');
+                    $productList->set($products);
+                    //$productList->expiresAfter(86400);
+                    $this->_cache->save($productList);
+
                     return new JsonResponse($products, 200, [], true);
                 } 
                 else 
                 {
-                    $error = $this->serializer()->serialize(['success' => false,
+                    $error = $this->_serializer()->serialize(['success' => false,
                     'type' => 'not found',
                     'message' => 'no products found'], 'json');
                     return new JsonResponse($error, 200, [], true);
@@ -113,7 +124,7 @@ class HomeController extends AbstractController
             } 
             catch (\Exception $e) 
             {
-                $error = $this->serializer()->serialize(['success' => false,
+                $error = $this->_serializer()->serialize(['success' => false,
                     'type' => 'fail',
                     'message' => 'fall to load autocomplete data'], 'json');
                 return new JsonResponse($error, 200, [], true);
@@ -122,13 +133,62 @@ class HomeController extends AbstractController
     }
 
 
+    /**
+     * recherche par nom
+     *
+     * @param Request $request
+     * @return void
+     */
     public function search(Request $request) {
+
         $brandName  = $this->_isValid( $request->request->get('brand') );
         $productName  = $this->_isValid( $request->request->get('product') );
-       $param = $this->serializer()->serialize(['brand' => $brandName,
-                    'product' => $productName
-                    ], 'json');
-                return new JsonResponse($param, 200, [], true);
+        
+        if ($this->_cache->hasItem($productName.'_found_for'.$brandName))
+        {
+            $products = $this->_cache->getItem($productName.'_found_for'.$brandName)->get();
+
+            return new JsonResponse($products, 200, [], true);
+
+        }
+        else
+        {
+            try 
+            {
+                // tous les produits de la marque $brnadName et qui ont pour nom $productName
+                $products = $this->getDoctrine()->getRepository(Product::class)->findByNameAndBrand($productName, $brandName);
+    
+                if ($products)
+                {
+                     // serialise en json
+                    $products = $this->_serializer('brand')->serialize($products, 'json');
+                    // met le resultat en cache
+                    $searchResult = $this->_cache->getItem($productName.'_found_for'.$brandName);
+                    $searchResult->set($products);
+                    $searchResult->expiresAfter(86400);
+                    $this->_cache->save($searchResult);
+                    //retourne le résultat
+                    return new JsonResponse($products, 200, [], true);
+                }
+                else
+                {
+                    
+                    $emptyResult = $this->_serializer()->serialize(['success' => false,
+                    'type' => 'not found',
+                    'message' => "<div><h2>Aucun résultat ne correspond à votre recherche</h2></div>"], 'json');
+                    return new JsonResponse($emptyResult, 200, [], true);
+                }
+               
+            }
+            catch (\Exception $e)
+            {
+                $error = $this->_serializer()->serialize(['success' => false,
+                    'type' => 'fail',
+                    'message' => '<div><h2 class="alert alert-warnning">Impossible to execute this request</h2></div>'], 'json');
+                return new JsonResponse($error, 200, [], true);
+            }
+        }
+
     }
 
 
@@ -164,20 +224,23 @@ class HomeController extends AbstractController
     /**
      * objet serializer
      *
-     * @param string $entityName le nom de l'entity concerné par la requête
+     * @param [type] $entityName le nom de l'entity concerné par la requête
      * @return void
      */
-    private function serializer(String $entityName = '') {
+    private function _serializer($object = null) {
        
         $encoders = array(new JsonEncoder());
         
-        if  ($entityName != '') 
+        if  ($object != null) 
         {
-            $normalizers = array((new ObjectNormalizer())->setIgnoredAttributes([$entityName]));
+            $normalizers = array((new ObjectNormalizer())->setIgnoredAttributes([$object]));
+            // $normalisers->setCircularReferenceHandler(function ($object) {
+            //     return $object->getName();
+            // });
         } 
         else 
         {
-            $normalizers = array(new ObjectNormalizer());
+            $normalizers = array((new ObjectNormalizer()));//$normalizers->setCircularReferenceLimit(1000000000000000000000000000000000000000000000000);
         }
             
         $serializer = new Serializer($normalizers, $encoders);
