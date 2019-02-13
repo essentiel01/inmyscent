@@ -34,7 +34,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        
+        // $this->_cache->clear();
         return $this->render('home/index.html.twig', [
                     'title' => 'InMyScent'
                     ]);
@@ -139,7 +139,7 @@ class HomeController extends AbstractController
      * @param Request $request
      * @return void
      */
-    public function search(Request $request) {
+    public function searchByName(Request $request) {
 
         $brandName  = $this->_isValid( $request->request->get('brand') );
         $productName  = $this->_isValid( $request->request->get('product') );
