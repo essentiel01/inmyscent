@@ -13,6 +13,6 @@ ajax-products:
   path: /products
   controller: App\Controller\HomeController::products
 
-ajax-search:
-  path: /search
-  controller: App\Controller\HomeController::search
+ajax-search-by-name:
+  path: /searchByName
+  controller: App\Controller\HomeController::searchByName
