@@ -116,7 +116,7 @@ $(document).ready(function() {
     autocompletion du champ family note
     ---------------------------*/
 
-    var familyNote = [];
+    var familyNotes = [];
 
     $("#search-by-family-note #brand").change(function(){
       
@@ -126,7 +126,7 @@ $(document).ready(function() {
         if (brandName) {
           $.ajax(
               {
-                  url: "././index.php/familyNotes",
+                  url: "././index.php/products",
                   method: "POST",
                   dataType: "json",
                   data: { brandName: brandName }
@@ -135,13 +135,13 @@ $(document).ready(function() {
             if (data.success == undefined) {
               console.log(data)
               // vide la variable familyNote
-              familyNote.splice(0, familyNote.length);
+              familyNotes.splice(0, familyNotes.length);
   
               // assigne les nouvelles valeurs à la variable familyNote
               $( data ).each(function( index , value) {
-                if (familyNote.includes(value.name) === false)
+                if (familyNotes.includes(value.familyNotes) === false)
                 {
-                  familyNote.push(value.name);
+                  familyNotes.push(value.familyNotes);
                 }
               });
 
@@ -161,7 +161,7 @@ $(document).ready(function() {
 
             } else if (data.success == false && data.type == 'not found') {
               // vide la variable familyNote
-              familyNote.splice(0, familyNote.length);
+              familyNotes.splice(0, familyNotes.length);
             }
 
           }).fail(function(error) {
@@ -170,13 +170,13 @@ $(document).ready(function() {
           
       } else {
         // vide la variable familyNote
-        familyNote.splice(0, familyNote.length);
+        familyNotes.splice(0, familyNotes.length);
       }
         
       // autocompletion de l'input family-note
       $( function() {
         $( "#search-by-family-note #family-note" ).autocomplete({
-          source: familyNote
+          source: familyNotes
         });
       });
     });
