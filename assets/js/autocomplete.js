@@ -126,7 +126,7 @@ $(document).ready(function() {
         if (brandName) {
           $.ajax(
               {
-                  url: "././index.php/searchByFamilyNote",
+                  url: "././index.php/familyNotes",
                   method: "POST",
                   dataType: "json",
                   data: { brandName: brandName }
