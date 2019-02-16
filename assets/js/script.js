@@ -4,19 +4,20 @@ $(document).ready(function() {
     function searchByName(e) {
         e.preventDefault();
         // variables
-        var brand = $("#brand").val();
-        var product = $("#product").val();
+        var brand = $("#search-by-name #brand").val();
+        var product = $("#search-by-name #product").val();
         // nettoyage des espaces blancs
         brand = brand.trim();
         product = product.trim();
-
+        
         if (brand != '')
         {
-            removeRedBorderFrom("#brand");
+            console.log(brand)
+            removeRedBorderFrom("#search-by-name #brand");
 
             if (product != '')
             {
-                removeRedBorderFrom("#product");
+                removeRedBorderFrom("#search-by-name #product");
 
                 $.ajax(
                     {
@@ -73,11 +74,11 @@ $(document).ready(function() {
                         });
 
                         //efface le result-container a chaque requête
-                        $("#result-container").empty();
+                        $("#search-by-name #result-container").empty();
                         // ajoute resultTitle au result-container
-                        $("#result-container").append( resultTitle);
+                        $("#search-by-name #result-container").append( resultTitle);
                         // ajoute accordion au result-container
-                        $("#result-container").append(accordion);
+                        $("#search-by-name #result-container").append(accordion);
                         // ajoute le produit à acoordion
                         $("#accordion").append(product);
 
@@ -90,12 +91,12 @@ $(document).ready(function() {
                     else if (data.type == 'not found')
                     {
                         // $("#search-by-name").after("<div id=\"result-container\"></div>");
-                        $("#result-container").html(data.message);
+                        $("#search-by-name #result-container").html(data.message);
                     }
                     else if (data.type == 'fail')
                     {
                         // $("#search-by-name").after("<div id=\"result-container\"></div>");
-                        $("#result-container").html(data.message);
+                        $("#search-by-name #result-container").html(data.message);
                     }
 
 
@@ -105,20 +106,20 @@ $(document).ready(function() {
             } 
             else
             {
-                addRedBorderTo("#product");
+                addRedBorderTo("#search-by-name #product");
             }
         }
         else 
         {
             if (product == '')
             {
-                addRedBorderTo("#brand");
-                addRedBorderTo("#product");
+                addRedBorderTo("#search-by-name #brand");
+                addRedBorderTo("#search-by-name #product");
             }
             else 
             {
-                addRedBorderTo("#brand");
-                removeRedBorderFrom("#product");
+                addRedBorderTo("#search-by-name #brand");
+                removeRedBorderFrom("#search-by-name #product");
             }
         }
     }
