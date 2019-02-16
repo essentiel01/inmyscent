@@ -13,37 +13,53 @@
 		{% block header %}
 			<nav>
 				<div class="nav nav-tabs" id="nav-tab" role="tablist">
-					<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Search by name</a>
-					<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Search by family note</a>
-					<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Search by top note</a>
+					<a class="nav-item nav-link active" id="nav-search-by-name-tab" data-toggle="tab" href="#nav-search-by-name" role="tab" aria-controls="nav-search-by-name" aria-selected="true">Search by name</a>
+					<a class="nav-item nav-link" id="nav-search-by-family-note-tab" data-toggle="tab" href="#nav-search-by-family-note" role="tab" aria-controls="nav-search-by-family-note" aria-selected="false">Search by family note</a>
+					<a class="nav-item nav-link" id="nav-search-by-note-tab" data-toggle="tab" href="#nav-search-by-note" role="tab" aria-controls="nav-search-by-note" aria-selected="false">Search by top note</a>
 				</div>
 			</nav>
 			<div class="tab-content container" id="nav-tabContent">
-				<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-					<form id="search-by-name">
-						<div class="form-group row">
-							<label class="col-sm-2 col-form-label" for="brand">Brand</label>
-							<input class="form-control" id="brand" type="text" placeholder="brand">
-						</div>
-						<div class="form-group row">
-							<label class="col-sm-2 col-form-label" for="product">Product</label>
-							<input class="form-control" id="product" type="text" placeholder="product">
-						</div>
-						<div class="form-group row">
-							<div class="col-sm-10">
-							<button type="submit" class="btn btn-primary" id="submit">Search</button>
+				<div class="tab-pane fade show active" id="nav-search-by-name" role="tabpanel" aria-labelledby="nav-search-by-name-tab">
+					<div id="search-by-name">
+						<form>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="brand">Brand</label>
+								<input class="form-control" id="brand" type="text" placeholder="brand">
 							</div>
-						</div>
-					</form>
-					<div id="result-container"></div>
-				</div>
-				<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label" for="brands">Brand</label>
-						<input class="form-control" id="brands" type="text" placeholder="Default input">
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="product">Product</label>
+								<input class="form-control" id="product" type="text" placeholder="product">
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-10">
+								<button type="submit" class="btn btn-primary" id="submit">Search</button>
+								</div>
+							</div>
+						</form>
+						<div id="result-container"></div>
 					</div>
 				</div>
-				<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+				<div class="tab-pane fade" id="nav-search-by-family-note" role="tabpanel" aria-labelledby="nav-search-by-family-note-tab">
+					<div id="search-by-family-note">
+						<form>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="brand">Brand</label>
+								<input class="form-control" id="brand" type="text" placeholder="brand">
+							</div>
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="product">Family note</label>
+								<input class="form-control" id="family-note" type="text" placeholder="family note">
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-10">
+								<button type="submit" class="btn btn-primary" id="submit">Search</button>
+								</div>
+							</div>
+						</form>
+						<div id="result-container"></div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="nav-search-by-note" role="tabpanel" aria-labelledby="nav-search-by-note-tab">...</div>
 			</div>
 		{% endblock %}
 
