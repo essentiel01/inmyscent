@@ -17,3 +17,7 @@ ajax-search-by-name:
   path: /searchByName
   controller: App\Controller\HomeController::searchByName
 
+ajax-search-by-family-note:
+  path: /searchByFamilyNote
+  controller: App\Controller\HomeController::searchByFamilyNote
+
