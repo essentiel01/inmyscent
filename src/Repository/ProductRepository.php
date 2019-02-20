@@ -54,7 +54,13 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
 
-
+    /**
+     * trouve tous les produits qui ont le nom $name et qui sont de la marque $brand
+     *
+     * @param String $name le nom du produit
+     * @param String $brand le nom de la marque
+     * @return void
+     */
     public function findByNameAndBrand(String $name, String $brand)
     {
         return $this->createQueryBuilder('p')
@@ -63,6 +69,20 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('b.name = :brand')
             ->setParameters(['name'=> $name, 'brand' => $brand])
             ->orderBy('p.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    public function findByFamilyNoteAndBrand(String $familyNote, String $brand)
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.brand', 'b')
+            ->where('p.familyNotes = :familyNote')
+            ->andWhere('b.name = :brand')
+            ->setParameters(['familyNote'=> $familyNote, 'brand' => $brand])
+            ->orderBy('p.familyNotes', 'ASC')
             ->getQuery()
             ->getResult()
         ;
