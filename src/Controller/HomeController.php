@@ -34,14 +34,14 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        // $this->_cache->clear();
+        //$this->_cache->clear();
         return $this->render('home/index.html.twig', [
                     'title' => 'InMyScent'
                     ]);
     }
 
     /**
-     * retourne la liste de toutes les marques au format json
+     * retourne la liste de toutes les marques au format json. si au moins un résultat est trouvé il est mit dans le cache de façon permmanente avec la clée 'brandList'. ce cache est invalidé chaque fois qu'il y a un ajout, une mise à jour ou une suppression dans la table brand.
      *
      * @return JsonResponse la liste de toutes les marque
      */
@@ -81,7 +81,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * retourne les produits de la marque spécifiée
+     * retourne les produits de la marque spécifiée par le paramètre $brandName. si au moins un résultat est trouvé il est mit dans le cache de façon permmanente avec la clée '$brandName_productList'. ce cache est invalidé chaque fois qu'il y a un ajout, une mise à jour ou une suppression dans la table product.
      *
      * @param Request $request objet request
      * @return JsonResponse liste des produits ou un message d'erreur au format json
@@ -134,7 +134,7 @@ class HomeController extends AbstractController
 
 
     /**
-     * recherche par nom
+     * recherche tous les parfums de la marque $brandName et qui ont pour nom $productName. si au moins un résultat est trouvé, il est mis en cache avec la clé 'parfum_$productName_found_for_$brandName' pendant 24h.
      *
      * @param Request $request
      * @return void
@@ -144,9 +144,9 @@ class HomeController extends AbstractController
         $brandName  = $this->_isValid( $request->request->get('brand') );
         $productName  = $this->_isValid( $request->request->get('product') );
         
-        if ($this->_cache->hasItem($productName.'_found_for'.$brandName))
+        if ($this->_cache->hasItem('parfum_'.$productName.'_found_for'.$brandName))
         {
-            $products = $this->_cache->getItem($productName.'_found_for'.$brandName)->get();
+            $products = $this->_cache->getItem('parfum_'.$productName.'_found_for'.$brandName)->get();
 
             return new JsonResponse($products, 200, [], true);
 
@@ -160,10 +160,10 @@ class HomeController extends AbstractController
     
                 if ($products)
                 {
-                     // serialise en json
+                    // serialise en json
                     $products = $this->_serializer('brand')->serialize($products, 'json');
                     // met le resultat en cache
-                    $searchResult = $this->_cache->getItem($productName.'_found_for'.$brandName);
+                    $searchResult = $this->_cache->getItem('parfum_'.$productName.'_found_for'.$brandName);
                     $searchResult->set($products);
                     $searchResult->expiresAfter(86400);
                     $this->_cache->save($searchResult);
@@ -178,7 +178,6 @@ class HomeController extends AbstractController
                     'message' => "<div><h2>Aucun résultat ne correspond à votre recherche</h2></div>"], 'json');
                     return new JsonResponse($emptyResult, 200, [], true);
                 }
-               
             }
             catch (\Exception $e)
             {
@@ -188,8 +187,66 @@ class HomeController extends AbstractController
                 return new JsonResponse($error, 200, [], true);
             }
         }
-
     }
+
+    
+    /**
+     * Reherche tous les produits de la marque $brandName et appartenant à la famille de note $familyNote. si au moins un resultat est trouvé, il mis en cache avec la clé 'parfum_$familyNote_found_for_$brandName'pendant 24h.
+     *
+     * @param Request $request Les paramètres de la requête ajax 
+     * @return void
+     */
+    public function searchByFamilyNote(Request $request) {
+
+        $brandName  = $this->_isValid( $request->request->get('brand') );
+        $familyNote  = $this->_isValid( $request->request->get('familyNote') );
+        
+        if ($this->_cache->hasItem('parfum_'.$familyNote.'_found_for_'.$brandName))
+        {
+            $products = $this->_cache->getItem('parfum_'.$familyNote.'_found_for_'.$brandName)->get();
+
+            return new JsonResponse($products, 200, [], true);
+
+        }
+        else
+        {
+            try 
+            {
+                // tous les produits de la marque $brnadName et qui ont pour nom $productName
+                $products = $this->getDoctrine()->getRepository(Product::class)->findByFamilyNoteAndBrand($familyNote, $brandName);
+    
+                if ($products)
+                {
+                    // serialise en json
+                    $products = $this->_serializer('brand')->serialize($products, 'json');
+                    // met le resultat en cache
+                    $searchResult = $this->_cache->getItem('parfum_'.$familyNote.'_found_for_'.$brandName);
+                    $searchResult->set($products);
+                    $searchResult->expiresAfter(86400);
+                    $this->_cache->save($searchResult);
+                    //retourne le résultat
+                    return new JsonResponse($products, 200, [], true);
+                }
+                else
+                {
+                    
+                    $emptyResult = $this->_serializer()->serialize(['success' => false,
+                    'type' => 'not found',
+                    'message' => "<div><h2>Aucun résultat ne correspond à votre recherche</h2></div>"], 'json');
+                    return new JsonResponse($emptyResult, 200, [], true);
+                }
+            }
+            catch (\Exception $e)
+            {
+                $error = $this->_serializer()->serialize(['success' => false,
+                    'type' => 'fail',
+                    'message' => '<div><h2 class="alert alert-warnning">Impossible to execute this request</h2></div>'], 'json');
+                return new JsonResponse($error, 200, [], true);
+            }
+        }
+    }
+
+
 
 
     /**
