@@ -29,7 +29,7 @@ $(document).ready(function() {
 
        // autocompletion du champ brand du formualaire search by name
        $( function() {
-         $( "#brand" ).autocomplete({
+         $( "#search-by-name #brand" ).autocomplete({
            source: brandsName
          });
        }); 
