@@ -75,6 +75,13 @@ class ProductRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * recherche tous les parfums de la marque $brand et appartenant à la famille de note $familyNote
+     *
+     * @param String $familyNote 
+     * @param String $brand
+     * @return void
+     */
     public function findByFamilyNoteAndBrand(String $familyNote, String $brand)
     {
         return $this->createQueryBuilder('p')
@@ -82,7 +89,21 @@ class ProductRepository extends ServiceEntityRepository
             ->where('p.familyNotes = :familyNote')
             ->andWhere('b.name = :brand')
             ->setParameters(['familyNote'=> $familyNote, 'brand' => $brand])
-            ->orderBy('p.familyNotes', 'ASC')
+            ->orderBy('p.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    public function findByNoteAndBrand(String $note, String $brand)
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.brand', 'b')
+            ->where('p.notes LIKE :note')
+            ->andWhere('b.name = :brand')
+            ->setParameters(['note'=> "%" .$note. "%", 'brand' => $brand])
+            ->orderBy('p.name', 'ASC')
             ->getQuery()
             ->getResult()
         ;
