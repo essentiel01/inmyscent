@@ -21,3 +21,6 @@ ajax-search-by-family-note:
   path: /searchByFamilyNote
   controller: App\Controller\HomeController::searchByFamilyNote
 
+ajax-search-by-note:
+  path: /searchByNote
+  controller: App\Controller\HomeController::searchByNote
