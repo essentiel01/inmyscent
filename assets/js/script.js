@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $('#search-by-name #submit').on("click", searchByName);
     $('#search-by-family-note #submit').on("click", searchByFamilyNote);
+    $('#search-by-note #submit').on("click", searchByNote);
 
     /*----------------------------------------------
     requete ajax searchByname
@@ -14,7 +15,7 @@ $(document).ready(function() {
         // nettoyage des espaces blancs
         brand = brand.trim();
         product = product.trim();
-        
+
         if (brand != '')
         {
             console.log(brand)
@@ -42,7 +43,7 @@ $(document).ready(function() {
                         } else if (resultCount == 1)
                         {
                             var resultTitle = "<div><h2>" + resultCount + " résultat correspond à votre recherche</h2></div>";
-                        } 
+                        }
 
                         var accordion = "<div id =\"accordion\"></div>";
                         var product = "";
@@ -66,7 +67,7 @@ $(document).ready(function() {
                                 product += "<spam class=\"type\"> " + value.type + "</spam>";
                                 product += "<spam class=\"gender\"> " + genderIcon + "</spam>";
                             product += "</h3>";
-                                
+
                             // les notes
                             product += "<div>";
                                 product += "<p>Family note: " + value.familyNotes + "</p>";
@@ -75,7 +76,7 @@ $(document).ready(function() {
                                 product += "<p>Base notes: " + value.baseNotes + "</p>";
                                 product += "<p>Notes: " + value.notes + "</p>";
                             product += "</div>";
-                        
+
                         });
 
                         //efface le result-container a chaque requête
@@ -87,8 +88,8 @@ $(document).ready(function() {
                         // ajoute le produit à acoordion
                         $("#accordion").append(product);
 
-                        // function jquery-ui 
-                        $( function() 
+                        // function jquery-ui
+                        $( function()
                         {
                             $( "#accordion" ).accordion();
                         } );
@@ -108,20 +109,20 @@ $(document).ready(function() {
                 }).fail(function(error) {
 
                 });
-            } 
+            }
             else
             {
                 addRedBorderTo("#search-by-name #product");
             }
         }
-        else 
+        else
         {
             if (product == '')
             {
                 addRedBorderTo("#search-by-name #brand");
                 addRedBorderTo("#search-by-name #product");
             }
-            else 
+            else
             {
                 addRedBorderTo("#search-by-name #brand");
                 removeRedBorderFrom("#search-by-name #product");
@@ -143,7 +144,7 @@ $(document).ready(function() {
         // nettoyage des espaces blancs
         brand = brand.trim();
         familyNote = familyNote.trim();
-        
+
         if (brand != '')
         {
             console.log(brand)
@@ -171,7 +172,7 @@ $(document).ready(function() {
                         } else if (resultCount == 1)
                         {
                             var resultTitle = "<div><h2>" + resultCount + " résultat correspond à votre recherche</h2></div>";
-                        } 
+                        }
 
                         var accordion = "<div id =\"accordion\"></div>";
                         var product = "";
@@ -195,7 +196,7 @@ $(document).ready(function() {
                                 product += "<spam class=\"type\"> " + value.type + "</spam>";
                                 product += "<spam class=\"gender\"> " + genderIcon + "</spam>";
                             product += "</h3>";
-                                
+
                             // les notes
                             product += "<div>";
                                 product += "<p>Family note: " + value.familyNotes + "</p>";
@@ -204,7 +205,7 @@ $(document).ready(function() {
                                 product += "<p>Base notes: " + value.baseNotes + "</p>";
                                 product += "<p>Notes: " + value.notes + "</p>";
                             product += "</div>";
-                        
+
                         });
 
                         //efface le result-container a chaque requête
@@ -216,8 +217,8 @@ $(document).ready(function() {
                         // ajoute le produit à acoordion
                         $("#accordion").append(product);
 
-                        // function jquery-ui 
-                        $( function() 
+                        // function jquery-ui
+                        $( function()
                         {
                             $( "#accordion" ).accordion();
                         } );
@@ -237,20 +238,20 @@ $(document).ready(function() {
                 }).fail(function(error) {
 
                 });
-            } 
+            }
             else
             {
                 addRedBorderTo("#search-by-family-note #family-note");
             }
         }
-        else 
+        else
         {
             if (familyNote == '')
             {
                 addRedBorderTo("#search-by-family-note #brand");
                 addRedBorderTo("#search-by-family-note #family-note");
             }
-            else 
+            else
             {
                 addRedBorderTo("#search-by-family-note #brand");
                 removeRedBorderFrom("#search-by-family-note #family-note");
@@ -259,12 +260,143 @@ $(document).ready(function() {
     }
 
 
+	/*----------------------------------------------
+    requete ajax searchByNote
+    ------------------------------------------------- */
 
-    
+    function searchByNote(e) {
+        e.preventDefault();
+        // variables
+        var brand = $("#search-by-note #brand").val();
+        var note = $("#search-by-note #note").val();
+        // nettoyage des espaces blancs
+        brand = brand.trim();
+        note = note.trim();
+
+        if (brand != '')
+        {
+            removeRedBorderFrom("#search-by-note #brand");
+
+            if (note != '')
+            {
+                removeRedBorderFrom("#search-by-note #note");
+
+                $.ajax(
+                    {
+                        url: "././index.php/searchByNote",
+                        method: "POST",
+                        dataType: "json",
+                        data: {brand: brand, note: note}
+                    }
+                ).done(function(data) {
+                    console.log(data);
+                    if (data.success === true && data.haveContent == true)
+                    {
+                        // variables
+                        var resultCount = data.content.length;
+                        console.log(resultCount);
+                        if (resultCount > 1)
+                        {
+                            var resultTitle = "<div><h2>" + resultCount + " résultats correspondent à votre recherche</h2></div>";
+                        } else if (resultCount == 1)
+                        {
+                            var resultTitle = "<div><h2>" + resultCount + " résultat correspond à votre recherche</h2></div>";
+                        }
+                        
+                        data.content.sort(function (a, b) {
+                            return b.score - a.score;
+                          });
+                        var accordion = "<div id =\"accordion\"></div>";
+                        var product = "";
+                        var genderIcon;
+
+                        $.each(data.content, function( index , value)
+                        {
+                            // définit l'icon à utiliser pour le produit
+                            if (value.product.gender == "female")
+                            {
+                                genderIcon = "<i class=\"fas fa-venus\"></i>";
+                            }
+                            else if (value.product.gender == "male")
+                            {
+                                genderIcon = "<i class=\"fas fa-mars\"></i>";
+                            }
+
+                            // titre
+                            product += "<h3>";
+                                product += "<spam class=\"name\">" + value.product.name + "</spam>";
+                                product += "<spam class=\"type\"> " + value.product.type + "</spam>";
+                                product += "<spam class=\"gender\"> " + genderIcon + "</spam>";
+                            product += "</h3>";
+
+                            // les notes
+                            product += "<div>";
+                                product += "<p>Family note: " + value.product.familyNotes + "</p>";
+                                product += "<p>Top notes: " + value.product.topNotes + "</p>";
+                                product += "<p>Heart notes: " + value.product.heartNotes + "</p>";
+                                product += "<p>Base notes: " + value.product.baseNotes + "</p>";
+                                product += "<p>Notes: " + value.product.notes + "</p>";
+                            product += "</div>";
+
+                        });
+
+                        //efface le result-container a chaque requête
+                        $("#search-by-note #result-container").empty();
+                        // ajoute resultTitle au result-container
+                        $("#search-by-note #result-container").append( resultTitle);
+                        // ajoute accordion au result-container
+                        $("#search-by-note #result-container").append(accordion);
+                        // ajoute le produit à acoordion
+                        $("#accordion").append(product);
+
+                        // function jquery-ui
+                        $( function()
+                        {
+                            $( "#accordion" ).accordion();
+                        } );
+                    }
+                    else if (data.success === true && data.haveContent === false)
+                    {
+                        // $("#search-by-name").after("<div id=\"result-container\"></div>");
+                        $("#search-by-note #result-container").html(data.message);
+                    }
+                    else if (data.success === false && data.haveContent === false)
+                    {
+                        // $("#search-by-name").after("<div id=\"result-container\"></div>");
+                        $("#search-by-note #result-container").html(data.message);
+                    }
+
+
+                }).fail(function(error) {
+                    console.log(error);
+
+                });
+            }
+            else
+            {
+                addRedBorderTo("#search-by-note #note");
+            }
+        }
+        else
+        {
+            if (note == '')
+            {
+                addRedBorderTo("#search-by-note #brand");
+                addRedBorderTo("#search-by-note #note");
+            }
+            else
+            {
+                addRedBorderTo("#search-by-note #brand");
+                removeRedBorderFrom("#search-by-note #note");
+            }
+        }
+    }
+
+
 
     /**
      * Supprime la class red-border pour l'élément spécifié
-     * @param {String} selector 
+     * @param {String} selector
      */
     function removeRedBorderFrom(selector)
     {
@@ -276,7 +408,7 @@ $(document).ready(function() {
 
     /**
      * ajoute une bordure rouge à l'élément spécifié en paramètre
-     * @param {String} selector 
+     * @param {String} selector
      */
     function addRedBorderTo(selector)
     {
