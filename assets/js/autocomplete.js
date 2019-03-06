@@ -8,14 +8,13 @@ $(document).ready(function() {
 
        // requete ajax
        $.get( "././index.php/brands", function( data ) {
-         if (data.success == undefined) {
-           $( data ).each(function( index , value) {
+         if (data.success === true && data.haveContent === true) {
+           $.each(data.content, function( index , value) {
              brands.push(value);
              brandsName.push(value.name);
            });
-         }
-
-         if (data.success == false) {
+         } else if (data.success === false && data.haveContent === false) 
+         {
            $(this).focus(function(e) {
              var div = $(this).after('<div class="alert alert-danger" id="brand-error-message"></div>');
              $(this).parent().children('div').text(data.message);
@@ -68,19 +67,19 @@ $(document).ready(function() {
               }
           ).done(function(data) {
 
-            if (data.success == undefined) {
-              // vide les variables products et productsName
+            if (data.success === true && data.haveContent === true) {
+              // vide le tableau productsName
               productsName.splice(0, productsName.length);
 
               // assigne les nouvelles valeurs à products et productsName
-              $( data ).each(function( index , value) {
+              $.each(data.content, function( index , value) {
                 if (productsName.includes(value.name) === false)
                 {
                   productsName.push(value.name);
                 }
               });
 
-            } else if (data.success == false && data.type == 'fail') {
+            } else if (data.success === false && data.haveContent == false) {
 
                 var div = $('#search-by-name #product').after('<div class="alert alert-warning" id="product-error-message"></div>');
                 $('#search-by-name #product').parent().children('div').text(data.message);
@@ -94,7 +93,7 @@ $(document).ready(function() {
                   $(this).parent().children('#product-error-message').remove();
                 });
 
-            } else if (data.success == false && data.type == 'not found') {
+            } else if (data.success === true && data.haveContent == false) {
               // vide les variables products et productsName
               productsName.splice(0, productsName.length);
             }
@@ -139,20 +138,20 @@ $(document).ready(function() {
                   data: { brandName: brandName }
               }
           ).done(function(data) {
-            if (data.success == undefined) {
+            if (data.success === true && data.haveContent === true) {
               console.log(data)
               // vide la variable familyNote
               familyNotes.splice(0, familyNotes.length);
 
               // assigne les nouvelles valeurs à la variable familyNote
-              $( data ).each(function( index , value) {
+              $.each(data.content, function( index , value) {
                 if (familyNotes.includes(value.familyNotes) === false)
                 {
                   familyNotes.push(value.familyNotes);
                 }
               });
 
-            } else if (data.success == false && data.type == 'fail') {
+            } else if (data.success === false && data.haveContent === false) {
 
                 var div = $('#search-by-family-note #family-note').after('<div class="alert alert-warning" id="product-error-message"></div>');
                 $('#search-by-family-note #family-note').parent().children('div').text(data.message);
@@ -166,7 +165,7 @@ $(document).ready(function() {
                   $(this).parent().children('#product-error-message').remove();
                 });
 
-            } else if (data.success == false && data.type == 'not found') {
+            } else if (data.success === true && data.haveContent === false) {
               // vide la variable familyNote
               familyNotes.splice(0, familyNotes.length);
             }
