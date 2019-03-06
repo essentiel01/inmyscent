@@ -146,11 +146,19 @@ class HomeController extends AbstractController
         $brandName  = $this->_isValid( $request->request->get('brand') );
         $productName  = $this->_isValid( $request->request->get('product') );
 
-        if ($this->_cache->hasItem('parfum_'.$productName.'_found_for'.$brandName))
-        {
-            $products = $this->_cache->getItem('parfum_'.$productName.'_found_for'.$brandName)->get();
+        $slugify = new Slugify();
+        $productNameSlug = $slugify->slugify($productName);
 
-            return new JsonResponse($products, 200, [], true);
+        if ($this->_cache->hasItem('parfum_'.$productNameSlug.'_found_for'.$brandName))
+        {
+            $products = $this->_cache->getItem('parfum_'.$productNameSlug.'_found_for'.$brandName)->get();
+
+            // sérialize en json
+            $response =  $this->_serializer('brand')->serialize(["success" => true,
+            "haveContent" => true,
+            "content" => $products], 'json');
+
+            return new JsonResponse($response, 200, [], true);
 
         }
         else
@@ -163,30 +171,35 @@ class HomeController extends AbstractController
                 if ($products)
                 {
                     // serialise en json
-                    $products = $this->_serializer('brand')->serialize($products, 'json');
+                    $response =  $this->_serializer('brand')->serialize(["success" => true,
+                    "haveContent" => true,
+                    "content" => $products], 'json');
                     // met le resultat en cache
-                    $searchResult = $this->_cache->getItem('parfum_'.$productName.'_found_for'.$brandName);
+                    $searchResult = $this->_cache->getItem('parfum_'.$productNameSlug.'_found_for'.$brandName);
                     $searchResult->set($products);
                     $searchResult->expiresAfter(86400);
                     $this->_cache->save($searchResult);
                     //retourne le résultat
-                    return new JsonResponse($products, 200, [], true);
+                    return new JsonResponse($response, 200, [], true);
                 }
                 else
                 {
 
-                    $emptyResult = $this->_serializer()->serialize(['success' => false,
-                    'type' => 'not found',
+                    $response = $this->_serializer()->serialize(['success' => true,
+                    'haveContent' => false,
                     'message' => "<div><h2>Aucun résultat ne correspond à votre recherche</h2></div>"], 'json');
-                    return new JsonResponse($emptyResult, 200, [], true);
+
+                    return new JsonResponse($response, 200, [], true);
                 }
             }
             catch (\Exception $e)
             {
-                $error = $this->_serializer()->serialize(['success' => false,
-                    'type' => 'fail',
+                $response = $this->_serializer()->serialize(['success' => false,
+                    'haveContent' => false,
+                    "error"=> $e,
                     'message' => '<div><h2 class="alert alert-warnning">Impossible to execute this request</h2></div>'], 'json');
-                return new JsonResponse($error, 200, [], true);
+
+                return new JsonResponse($response, 200, [], true);
             }
         }
     }
@@ -208,7 +221,7 @@ class HomeController extends AbstractController
 
         if ($this->_cache->hasItem('parfum_'.$familyNoteSlug.'_found_for_'.$brandName))
         {
-            $products = $this->_cache->getItem('parfum_'.$familyNote.'_found_for_'.$brandName)->get();
+            $products = $this->_cache->getItem('parfum_'.$familyNoteSlug.'_found_for_'.$brandName)->get();
 
             // serialise en json
             $response = $this->_serializer('brand')->serialize(["success" => true,
@@ -237,6 +250,7 @@ class HomeController extends AbstractController
                     $searchResult->set($products);
                     $searchResult->expiresAfter(86400);
                     $this->_cache->save($searchResult);
+
                     //retourne le résultat
                     return new JsonResponse($response, 200, [], true);
                 }

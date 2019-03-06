@@ -18,7 +18,6 @@ $(document).ready(function() {
 
         if (brand != '')
         {
-            console.log(brand)
             removeRedBorderFrom("#search-by-name #brand");
 
             if (product != '')
@@ -33,10 +32,10 @@ $(document).ready(function() {
                         data: {brand: brand, product: product}
                     }
                 ).done(function(data) {
-                    if (data.type == undefined)
+                    if (data.success === true && data.haveContent === true)
                     {
                         // variables
-                        var resultCount = data.length;
+                        var resultCount = data.content.length;
                         if (resultCount > 1)
                         {
                             var resultTitle = "<div><h2>" + resultCount + " résultats correspondent à votre recherche</h2></div>";
@@ -49,7 +48,7 @@ $(document).ready(function() {
                         var product = "";
                         var genderIcon;
 
-                        $( data ).each(function( index , value)
+                        $.each(data.content, function( index , value)
                         {
                             // définit l'icon à utiliser pour le produit
                             if (value.gender == "female")
@@ -94,12 +93,12 @@ $(document).ready(function() {
                             $( "#accordion" ).accordion();
                         } );
                     }
-                    else if (data.type == 'not found')
+                    else if (data.success === true && data.haveContent === false)
                     {
                         // $("#search-by-name").after("<div id=\"result-container\"></div>");
                         $("#search-by-name #result-container").html(data.message);
                     }
-                    else if (data.type == 'fail')
+                    else if (data.success === false && data.haveContent === false)
                     {
                         // $("#search-by-name").after("<div id=\"result-container\"></div>");
                         $("#search-by-name #result-container").html(data.message);
