@@ -36,7 +36,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        // $this->_cache->clear();
+        //$this->_cache->clear();
         return $this->render('home/index.html.twig', [
                     'title' => 'InMyScent'
                     ]);
@@ -50,9 +50,14 @@ class HomeController extends AbstractController
     public function brands() {
         if ($this->_cache->hasItem('brandList'))
         {
-            $brandList = $this->_cache->getItem('brandList');
+            $brands = $this->_cache->getItem('brandList')->get();
 
-            return new JsonResponse($brandList->get(), 200, [], true);
+            //  sérialize en json
+            $response = $this->_serializer('brand')->serialize(["success" => true,
+            "haveContent" => true,
+            "content" => $brands], 'json');
+
+            return new JsonResponse($response, 200, [], true);
         }
         else
         {
@@ -63,21 +68,32 @@ class HomeController extends AbstractController
                 if ($brands)
                 {
                     // converti au format json
-                    $brands = $this->_serializer('brand')->serialize($brands, 'json');
+                    $response = $this->_serializer('brand')->serialize(["success" => true,
+                    "haveContent" => true,
+                    "content" => $brands], 'json');
+
                     // met réusltat en cache
                     $brandList = $this->_cache->getItem("brandList");
                     $brandList->set($brands);
                     $this->_cache->save($brandList);
-                    // $this->_cache->set('brands', $brands, 3600);
 
-                    return new JsonResponse($brands, 200, [], true);
+                    return new JsonResponse($response, 200, [], true);
+                } else 
+                {
+                    $response = $this->_serializer('brand')->serialize(["success" => true,
+                    "haveContent" => false
+                    ], 'json');
+
+                    return new JsonResponse($response, 200, [], true);
                 }
             }
             catch(\Exception $e)
             {
-                $error = $this->_serializer()->serialize(['success' => false,
-                    'message' => 'fall to load autocomplete data'], 'json');
-                return new JsonResponse($error, 200, [], true);
+                $response = $this->_serializer()->serialize(['success' => false,
+                "haveContent" => false,
+                "error" => $e,
+                'message' => 'fall to load autocomplete data'], 'json');
+                return new JsonResponse($response, 200, [], true);
             }
         }
     }
@@ -92,11 +108,20 @@ class HomeController extends AbstractController
 
         $brandName = $this->_isValid($request->request->get('brandName'));
 
+        $slugify = new Slugify();
+        $brandNameSlug = $slugify->slugify($brandName);
+
         //$this->_cache->deleteItem($brandName.'_productList');
-        if($this->_cache->hasItem($brandName.'_productList'))
+        if($this->_cache->hasItem($brandNameSlug.'_productList'))
         {
-            $products = $this->_cache->getItem($brandName.'_productList')->get();
-            return new JsonResponse($products, 200, [], true);
+            $products = $this->_cache->getItem($brandNameSlug.'_productList')->get();
+
+             // converti au format json
+             $response = $this->_serializer('brand')->serialize(["success" => true,
+             "haveContent" => true,
+             "content" => $products], 'json');
+
+            return new JsonResponse($response, 200, [], true);
         }
         else
         {
@@ -107,29 +132,33 @@ class HomeController extends AbstractController
                 if ($products)
                 {
                     // converti au format json
-                    $products = $this->_serializer('brand')->serialize($products, 'json');
+                    $response = $this->_serializer('brand')->serialize(["success" => true,
+                    "haveContent" => true,
+                    "content" => $products], 'json');
+
                     // met réusltat en cache
-                    $productList = $this->_cache->getItem($brandName.'_productList');
+                    $productList = $this->_cache->getItem($brandNameSlug.'_productList');
                     $productList->set($products);
                     //$productList->expiresAfter(86400);
                     $this->_cache->save($productList);
 
-                    return new JsonResponse($products, 200, [], true);
+                    return new JsonResponse($response, 200, [], true);
                 }
                 else
                 {
-                    $error = $this->_serializer()->serialize(['success' => false,
-                    'type' => 'not found',
+                    $response = $this->_serializer()->serialize(['success' => true,
+                    'haveContent' => false,
                     'message' => 'no products found'], 'json');
-                    return new JsonResponse($error, 200, [], true);
+                    return new JsonResponse($response, 200, [], true);
                 }
             }
             catch (\Exception $e)
             {
-                $error = $this->_serializer()->serialize(['success' => false,
-                    'type' => 'fail',
+                $response = $this->_serializer()->serialize(['success' => false,
+                    'haveContent' => false,
+                    "error" => $e,
                     'message' => 'fall to load autocomplete data'], 'json');
-                return new JsonResponse($error, 200, [], true);
+                return new JsonResponse($response, 200, [], true);
             }
         }
     }
