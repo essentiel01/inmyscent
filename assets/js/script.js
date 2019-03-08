@@ -51,13 +51,17 @@ $(document).ready(function() {
                         $.each(data.content, function( index , value)
                         {
                             // définit l'icon à utiliser pour le produit
-                            if (value.gender == "female")
+                            if (value.gender == "f")
                             {
                                 genderIcon = "<i class=\"fas fa-venus\"></i>";
                             }
-                            else if (value.gender == "male")
+                            else if (value.gender == "m")
                             {
                                 genderIcon = "<i class=\"fas fa-mars\"></i>";
+                            }
+                            else if (value.gender == "mixte")
+                            {
+                                genderIcon = "<i class=\"fas fa-venus\"></i><i class=\"fas fa-mars\"></i>";
                             }
 
                             // titre
@@ -179,13 +183,17 @@ $(document).ready(function() {
                         $.each(data.content, function( index , value)
                         {
                             // définit l'icon à utiliser pour le produit
-                            if (value.gender == "female")
+                            if (value.gender == "f")
                             {
                                 genderIcon = "<i class=\"fas fa-venus\"></i>";
                             }
-                            else if (value.gender == "male")
+                            else if (value.gender == "m")
                             {
                                 genderIcon = "<i class=\"fas fa-mars\"></i>";
+                            }
+                            else if (value.gender == "mixte")
+                            {
+                                genderIcon = "<i class=\"fas fa-venus\"></i><i class=\"fas fa-mars\"></i>";
                             }
 
                             // titre
@@ -311,13 +319,17 @@ $(document).ready(function() {
                         $.each(data.content, function( index , value)
                         {
                             // définit l'icon à utiliser pour le produit
-                            if (value.product.gender == "female")
+                            if (value.product.gender == "f")
                             {
                                 genderIcon = "<i class=\"fas fa-venus\"></i>";
                             }
-                            else if (value.product.gender == "male")
+                            else if (value.product.gender == "m")
                             {
                                 genderIcon = "<i class=\"fas fa-mars\"></i>";
+                            }
+                            else if (value.product.gender == "mixte")
+                            {
+                                genderIcon = "<i class=\"fas fa-venus\"></i><i class=\"fas fa-mars\"></i>";
                             }
 
                             // titre
