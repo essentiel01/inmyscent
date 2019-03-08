@@ -10,11 +10,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Cocur\Slugify\Slugify;
+
 /**
  * @Route("/admin/product")
  */
 class ProductController extends AbstractController
 {
+    protected $_slugifier;
+
+    public function __construct() {
+        $this->_slugifier = new Slugify();
+    }
+
     /**
      * @Route("/", name="product_index", methods={"GET"})
      */
@@ -33,9 +41,17 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($product);
-            $entityManager->flush();
+            
+            $slug = $this->_slugifier->slugify( $product->getName() );
+            $product->setSlug($slug);
+            
+            if ($product->getNotes() === null) {
+                $product->setNotes( $product->getTopNotes() . ',' . $product->getHeartNotes() . ',' . $product->getBaseNotes() );
+            }
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
 
             return $this->redirectToRoute('product_index');
         }
@@ -59,10 +75,19 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product): Response
     {
+        dump($product);
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $slug = $this->_slugifier->slugify( $product->getName() );
+            $product->setSlug($slug);
+            
+            if ($product->getNotes() === null) {
+                $product->setNotes( $product->getTopNotes() . ',' . $product->getHeartNotes() . ',' . $product->getBaseNotes() );
+            }
+            
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('product_index', ['id' => $product->getId()]);
