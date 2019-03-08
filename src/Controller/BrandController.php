@@ -10,11 +10,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Cocur\Slugify\Slugify;
+
+
 /**
  * @Route("/admin/brand")
  */
 class BrandController extends AbstractController
 {
+    
+    protected $_slugifier;
+
+    public function __construct() {
+        $this->_slugifier = new Slugify();
+    }
+
     /**
      * @Route("/", name="brand_index", methods={"GET"})
      */
@@ -33,9 +43,12 @@ class BrandController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($brand);
-            $entityManager->flush();
+            $slug = $this->_slugifier->slugify( $brand->getName() );
+            $brand->setSlug($slug);
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($brand);
+            $em->flush();
 
             return $this->redirectToRoute('brand_index');
         }
