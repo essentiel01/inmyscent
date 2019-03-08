@@ -210,10 +210,9 @@ class Product
         return $this->slug;
     }
 
-    public function setSlug(): self
+    public function setSlug(?string $slug): self
     {
-        $slugify = new Slugify();
-        $this->slug = $slugify->slugify($this->getName());
+        $this->slug = $slug;
 
         return $this;
     }
