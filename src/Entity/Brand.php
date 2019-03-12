@@ -10,6 +10,7 @@ use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BrandRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Brand
 {
@@ -95,10 +96,23 @@ class Brand
         return $this->slug;
     }
 
-    public function setSlug(?string $slug): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setSlug(): self
     {
-        $this->slug = $slug;
+        $this->slug = (new Slugify())->slugify($this->name);
 
         return $this;
     }
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateSlug(): self
+    {
+        $this->slug = (new Slugify())->slugify($this->name);
+
+        return $this;
+    }
+    
 }
