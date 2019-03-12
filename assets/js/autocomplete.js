@@ -7,7 +7,7 @@ $(document).ready(function() {
 
 
        // requete ajax
-       $.get( "././index.php/brands", function( data ) {
+       $.get( "././brands", function( data ) {
          if (data.success === true && data.haveContent === true) {
            $.each(data.content, function( index , value) {
              brands.push(value);
@@ -60,7 +60,7 @@ $(document).ready(function() {
         if (brandName) {
           $.ajax(
               {
-                  url: "././index.php/products",
+                  url: "././products",
                   method: "POST",
                   dataType: "json",
                   data: { brandName: brandName }
@@ -132,7 +132,7 @@ $(document).ready(function() {
         if (brandName) {
           $.ajax(
               {
-                  url: "././index.php/products",
+                  url: "././products",
                   method: "POST",
                   dataType: "json",
                   data: { brandName: brandName }

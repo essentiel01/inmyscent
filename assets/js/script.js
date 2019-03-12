@@ -26,7 +26,7 @@ $(document).ready(function() {
 
                 $.ajax(
                     {
-                        url: "././index.php/searchByName",
+                        url: "././searchByName",
                         method: "POST",
                         dataType: "json",
                         data: {brand: brand, product: product}
@@ -158,7 +158,7 @@ $(document).ready(function() {
 
                 $.ajax(
                     {
-                        url: "././index.php/searchByFamilyNote",
+                        url: "././searchByFamilyNote",
                         method: "POST",
                         dataType: "json",
                         data: {brand: brand, familyNote: familyNote}
@@ -289,7 +289,7 @@ $(document).ready(function() {
 
                 $.ajax(
                     {
-                        url: "././index.php/searchByNote",
+                        url: "././searchByNote",
                         method: "POST",
                         dataType: "json",
                         data: {brand: brand, note: note}
