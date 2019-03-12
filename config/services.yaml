@@ -33,3 +33,6 @@ services:
     App\EventListener\PostPersistListener:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
+    App\EventListener\PostRemoveListener:
+        tags:
+            - { name: doctrine.event_listener, event: postRemove }
