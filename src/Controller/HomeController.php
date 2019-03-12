@@ -36,7 +36,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        //$this->_cache->clear();
+        // $this->_cache->clear();
         return $this->render('home/index.html.twig', [
                     'title' => 'InMyScent'
                     ]);
@@ -178,9 +178,9 @@ class HomeController extends AbstractController
         $slugify = new Slugify();
         $productNameSlug = $slugify->slugify($productName);
 
-        if ($this->_cache->hasItem('parfum_'.$productNameSlug.'_found_for'.$brandName))
+        if ($this->_cache->hasItem('parfum_'.$productNameSlug.'_found_for_'.$brandName))
         {
-            $products = $this->_cache->getItem('parfum_'.$productNameSlug.'_found_for'.$brandName)->get();
+            $products = $this->_cache->getItem('parfum_'.$productNameSlug.'_found_for_'.$brandName)->get();
 
             // sérialize en json
             $response =  $this->_serializer('brand')->serialize(["success" => true,
@@ -204,7 +204,7 @@ class HomeController extends AbstractController
                     "haveContent" => true,
                     "content" => $products], 'json');
                     // met le resultat en cache
-                    $searchResult = $this->_cache->getItem('parfum_'.$productNameSlug.'_found_for'.$brandName);
+                    $searchResult = $this->_cache->getItem('parfum_'.$productNameSlug.'_found_for_'.$brandName);
                     $searchResult->set($products);
                     $searchResult->expiresAfter(86400);
                     $this->_cache->save($searchResult);
@@ -378,7 +378,7 @@ class HomeController extends AbstractController
 	                    // met le resultat en cache
                         $searchResult = $this->_cache->getItem('parfum_found_for_'.$notesSlug.'_and_'.$brandName);
 	                    $searchResult->set($products);
-	                    $searchResult->expiresAfter(86400);
+	                    $searchResult->expiresAfter(1800);
 	                    $this->_cache->save($searchResult);
                         
                         // retourne le résultat
