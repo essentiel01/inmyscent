@@ -37,6 +37,7 @@ class PostPersistListener
             $brandNameSlug = ( $entity->getBrand() )->getSlug();
             $brandName = ( $entity->getBrand() )->getName();
             $familyNoteSlug = ( new Slugify() )->slugify( $entity->getFamilyNotes() );
+            $productNameSlug = $entity->getSlug();
 
             // quand on ajoute un nouveau produit, si ce produit appartient à une marque dont la liste des produits est stockée dans le cache alors cette liste devient obsolète et on l'invalide
             if ($this->_cache->hasItem($brandNameSlug . "_productList")) 
@@ -49,9 +50,13 @@ class PostPersistListener
             {
                 $this->_cache->deleteItem('parfum_'.$familyNoteSlug.'_found_for_'.$brandName);
             }
+
+            // quand on ajoute un produit , si le nom de ce produit avait déjà fait l'objet d'une recherche dont le résutat est stocké dans le cache alors ce résultat devient obsolète et on l'invalide.
+            if ($this->_cache->hasItem('parfum_'.$productNameSlug.'_found_for_'.$brandName)) 
+            {
+                $this->_cache->deleteItem('parfum_'.$productNameSlug.'_found_for_'.$brandName);
+            }
         }
 
-        // $entityManager = $args->getObjectManager();
-        // ... do something with the Product
     }
 }
