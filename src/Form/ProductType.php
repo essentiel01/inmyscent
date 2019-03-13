@@ -61,19 +61,6 @@ class ProductType extends AbstractType
                     ]
                 ]
             )
-            ->add('created_at', DateTimeType::class,
-                [
-                    "label" => "Date d'enregistrement",
-                    "required" => FALSE,
-                    "date_widget" => "single_text"
-                ]
-            )
-            ->add('topNotes', TextType::class,
-                [
-                    "label" => "Notes de tête",
-                    "required" => FALSE
-                ]
-            )
             ->add('familyNotes', TextType::class,
                 [
                     "label" => "Famille de notes",
@@ -83,9 +70,9 @@ class ProductType extends AbstractType
                     ])
                 ]
             )
-            ->add('baseNotes', TextType::class,
+            ->add('topNotes', TextType::class,
                 [
-                    "label" => "Notes de base",
+                    "label" => "Notes de tête",
                     "required" => FALSE,
                     "constraints" => new Length([
                         "min" => 3,
@@ -103,6 +90,17 @@ class ProductType extends AbstractType
                     ])
                 ]
             )
+            ->add('baseNotes', TextType::class,
+                [
+                    "label" => "Notes de base",
+                    "required" => FALSE,
+                    "constraints" => new Length([
+                        "min" => 3,
+                        "minMessage" => "Ce champ doit contenir au moins {{ limit }} caractères"
+                    ])
+                ]
+            )
+
             ->add('notes', TextType::class,
                 [
                     "label" => "Notes",
