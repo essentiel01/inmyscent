@@ -9,6 +9,7 @@ use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Product
 {
@@ -76,7 +77,10 @@ class Product
     private $slug;
 
     
-    
+    public  function __construct()
+    {
+        $this->created_at = new \DateTime();
+    }
     
 
     public function getId(): ?int
@@ -120,17 +124,11 @@ class Product
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): \DateTime
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $created_at): self
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
 
     public function getBrand(): ?Brand
     {
@@ -210,9 +208,44 @@ class Product
         return $this->slug;
     }
 
-    public function setSlug(?string $slug): self
+    
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setSlug(): self
     {
-        $this->slug = $slug;
+        $this->slug = (new Slugify())->slugify($this->name);
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setNotesIfNull()
+    {
+        $this->notes = $this->topNotes . ',' . $this->heartNotes . ',' . $this->baseNotes;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateNotesIfNull()
+    {
+        $this->notes = $this->topNotes . ',' . $this->heartNotes . ',' . $this->baseNotes;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateSlug(): self
+    {
+        $this->slug = (new Slugify())->slugify($this->name);
 
         return $this;
     }
