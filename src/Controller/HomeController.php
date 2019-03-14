@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Brand;
 use App\Entity\Product;
+use App\Entity\NotFound;
 use Cocur\Slugify\Slugify;
 
 
@@ -22,11 +23,13 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 class HomeController extends AbstractController
 {
 
-    private $_cache;
+    protected $_cache;
+    protected $_slugifier;
 
     public function __construct() {
         // $this->_cache = new FilesystemCache();
         $this->_cache = new FilesystemAdapter();
+        $this->_slugifier = new Slugify();
     }
 
     /**
@@ -108,8 +111,7 @@ class HomeController extends AbstractController
 
         $brandName = $this->_isValid($request->request->get('brandName'));
 
-        $slugify = new Slugify();
-        $brandNameSlug = $slugify->slugify($brandName);
+        $brandNameSlug = $this->_slugifier->slugify($brandName);
 
         //$this->_cache->deleteItem($brandName.'_productList');
         if($this->_cache->hasItem($brandNameSlug.'_productList'))
@@ -175,8 +177,7 @@ class HomeController extends AbstractController
         $brandName  = $this->_isValid( $request->request->get('brand') );
         $productName  = $this->_isValid( $request->request->get('product') );
 
-        $slugify = new Slugify();
-        $productNameSlug = $slugify->slugify($productName);
+        $productNameSlug = $this->_slugifier->slugify($productName);
 
         if ($this->_cache->hasItem('parfum_'.$productNameSlug.'_found_for_'.$brandName))
         {
@@ -203,11 +204,13 @@ class HomeController extends AbstractController
                     $response =  $this->_serializer('brand')->serialize(["success" => true,
                     "haveContent" => true,
                     "content" => $products], 'json');
+
                     // met le resultat en cache
                     $searchResult = $this->_cache->getItem('parfum_'.$productNameSlug.'_found_for_'.$brandName);
                     $searchResult->set($products);
                     $searchResult->expiresAfter(86400);
                     $this->_cache->save($searchResult);
+
                     //retourne le résultat
                     return new JsonResponse($response, 200, [], true);
                 }
@@ -217,6 +220,16 @@ class HomeController extends AbstractController
                     $response = $this->_serializer()->serialize(['success' => true,
                     'haveContent' => false,
                     'message' => "<div><h2>Aucun résultat ne correspond à votre recherche</h2></div>"], 'json');
+
+                    // on enregistre le nom de la marque et du produit non trouvé dans la table not_found
+                    $notFound = new NotFound();
+                    $notFound->setBrand($brandName);
+                    $notFound->setProduct($productName);
+                    
+                    $em = $this->getDoctrine()->getManager();
+
+                    $em->persist($notFound);
+                    $em->flush();
 
                     return new JsonResponse($response, 200, [], true);
                 }
@@ -245,8 +258,7 @@ class HomeController extends AbstractController
         $brandName  = $this->_isValid( $request->request->get('brand') );
         $familyNote  = $this->_isValid( $request->request->get('familyNote') );
 
-        $slugify = new Slugify();
-        $familyNoteSlug = $slugify->slugify($familyNote);
+        $familyNoteSlug = $this->_slugifier->slugify($familyNote);
 
         if ($this->_cache->hasItem('parfum_'.$familyNoteSlug.'_found_for_'.$brandName))
         {
@@ -314,8 +326,7 @@ class HomeController extends AbstractController
         $brandName  = $this->_isValid( $request->request->get('brand') );
         $notes = $request->request->get('note');
 
-        $slugify = new Slugify();
-        $notesSlug = $slugify->slugify($notes);
+        $notesSlug = $this->_slugifier->slugify($notes);
         
         $searchNotes  = explode( ",", $notes );
         $searchNotes  = $this->_isValid( $searchNotes );
