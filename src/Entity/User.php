@@ -18,8 +18,27 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\Sex
+     * @ORM\Column(type="string")
+     */
+    protected $sex;
+
     public function __construct()
     {
         parent::__construct();
+        $this->addRole("ROLE_ADMIN");
+    }
+
+    public function setSex(String $sex)
+    {
+        $this->sex = $sex;
+
+        return $this;
+    }
+
+    public function getSex()
+    {
+        return $this->sex;
     }
 }
