@@ -26,10 +26,7 @@ class NotFound
      */
     private $product;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $gender;
+   
 
     public function getId(): ?int
     {
@@ -60,15 +57,5 @@ class NotFound
         return $this;
     }
 
-    public function getGender(): ?string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(?string $gender): self
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
+   
 }
