@@ -19,15 +19,27 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\Sex
-     * @ORM\Column(type="string")
+    
+     * @ORM\Column(type="string", length=8)
      */
     protected $sex;
 
     public function __construct()
     {
         parent::__construct();
-        $this->addRole("ROLE_ADMIN");
+        $this->addRole("ROLE_USER");
+       
+        // si username et password ne sont pas defini on leur assigne une valeur arbitraire 
+        if ($this->username === null)
+        {
+            $this->username = bin2hex(random_bytes(32));
+        }
+
+        if ($this->password === null)
+        {
+            $this->password = bin2hex(random_bytes(32));
+            $this->plainPassword = $this->password;
+        }
     }
 
     public function setSex(String $sex)
