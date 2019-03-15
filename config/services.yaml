@@ -39,3 +39,9 @@ services:
     App\EventListener\PostRemoveListener:
         tags:
             - { name: doctrine.event_listener, event: postRemove }
+
+    # custom registration form type for fosuserbundle
+    app.form.registration:
+        class: App\Form\RegistrationFormType
+        tags:
+            - { name: form.type, alias: app_user_registration }

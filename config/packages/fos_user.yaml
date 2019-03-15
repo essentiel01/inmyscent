@@ -5,3 +5,8 @@ fos_user:
     from_email:
         address: "admin@inmyfragrance.com"
         sender_name: "no reply"
+    
+    # use the custom registrationFormType instead the default
+    registration:
+        form:
+            type: App\Form\RegistrationFormType
