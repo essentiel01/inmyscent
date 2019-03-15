@@ -21,6 +21,7 @@ security:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
             logout_on_user_change:       true
+            logout: ~
 
             # activate different ways to authenticate
 
@@ -34,6 +35,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: ROLE_ADMIN }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
