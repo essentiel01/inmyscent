@@ -225,7 +225,10 @@ class Product
      */
     public function setNotesIfNull()
     {
-        $this->notes = $this->topNotes . ',' . $this->heartNotes . ',' . $this->baseNotes;
+        if ($this->notes === null)
+        {
+            $this->notes = $this->topNotes . ',' . $this->heartNotes . ',' . $this->baseNotes;
+        }
 
         return $this;
     }
@@ -235,7 +238,11 @@ class Product
      */
     public function updateNotesIfNull()
     {
-        $this->notes = $this->topNotes . ',' . $this->heartNotes . ',' . $this->baseNotes;
+        if ($this->notes === null)
+        {
+            $this->notes = $this->topNotes . ',' . $this->heartNotes . ',' . $this->baseNotes;
+        }
+
 
         return $this;
     }
