@@ -9,10 +9,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
 // types
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-// validation
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+
 
 
 class RegistrationFormType extends AbstractType
@@ -21,22 +21,23 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, array('label' => 'Adresse email', 'translation_domain' => 'FOSUserBundle'))
-            ->add("sex", ChoiceType::class, array(
-                    'label' => '',
-                    'choices' => array('male'=>'m', 'female'=>'f'),
-                    'expanded' => true,
-                    'constraints' => array( 
-                        new NotBlank(array(
-                            'message'=>'Ce champ est obligatoire'
-                            )
-                        )
-                    )
-                )
-            )
-        ;
+            ->add('username', null, array('label' => 'Nom d\'utilisateur', 'translation_domain' => 'FOSUserBundle'))
+            ->add('plainPassword', RepeatedType::class, array(
+                'type' => PasswordType::class,
+                'options' => array(
+                    'translation_domain' => 'FOSUserBundle',
+                    'attr' => array(
+                        'autocomplete' => 'new-password',
+                    ),
+                ),
+                'first_options' => array('label' => 'Mot de passe'),
+                'second_options' => array('label' => 'Confirmation de mot de passe'),
+                'invalid_message' => 'La valeur saisie ne correspond pas au mot de passe',
+            ))
+        ; 
     }
 
-    /**
+   /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
