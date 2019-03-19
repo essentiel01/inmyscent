@@ -2,7 +2,7 @@
 
     <div class="fos_user_user_show">
         <p>
-            Nom d\'utilisateur: {{ user.username }}
+            Nom d'utilisateur: {{ user.username }}
         </p>
         <p>
             Adresse email: {{ user.email }}
@@ -14,6 +14,8 @@
             {% endfor %}
         </p>
         <p>
+            <a class="btn btn-primary" title="modifier le profil" href="{{ path('fos_user_profile_edit') }}">Modifier mon profil</a>
             <a class="btn btn-primary" title="modifier le mot de passe" href="{{ path('fos_user_change_password') }}">Modifier mon mot de passe</a>
+
         </p>
     </div>
