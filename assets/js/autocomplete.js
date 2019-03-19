@@ -66,7 +66,6 @@ $(document).ready(function() {
                   data: { brandName: brandName }
               }
           ).done(function(data) {
-
             if (data.success === true && data.haveContent === true) {
               // vide le tableau productsName
               productsName.splice(0, productsName.length);
