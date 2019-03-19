@@ -26,6 +26,7 @@ home:
   path: /
   controller: App\Controller\HomeController::index
 
+# routes ajax
 ajax-brands:
   path: brands/
   controller: App\Controller\HomeController::brands
@@ -45,3 +46,12 @@ ajax-search-by-family-note:
 ajax-search-by-note:
   path: /searchByNote
   controller: App\Controller\HomeController::searchByNote
+
+  # routes admin
+admin-index:
+  path: /admin
+  controller: App\Controller\AdminController::index
+
+user-index:
+  path: /users
+  controller: App\Controller\UserController::index
