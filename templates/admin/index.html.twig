@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% block title %}Dashboard{% endblock %}
+       
+
+        {% block currentPageTitle %}
+            <h1>
+                {{ title }}
+            </h1>
+            <p>
+                {{ warning }}
+                <span> {{ admin }} </span>
+            </p>
+        {% endblock %}
+
+    {% block nav %}
+        <div>
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('brand_index') }}">Les marques</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('product_index') }}">Les parfums</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Les parfums à ajouter</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('user-index') }}">Gestion des utilisateur</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Gestion des abonnés</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Statistiques</a>
+                </li>
+            </ul>
+        </div>    
+    {% endblock %}
+    
