@@ -1,0 +1,19 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+    <div class="fos_user_user_show">
+        <p>
+            Nom d\'utilisateur: {{ user.username }}
+        </p>
+        <p>
+            Adresse email: {{ user.email }}
+        </p>
+        <p>
+            Rôle: 
+            {% for role in user.roles %}
+                {{ role }}
+            {% endfor %}
+        </p>
+        <p>
+            <a class="btn btn-primary" title="modifier le mot de passe" href="{{ path('fos_user_change_password') }}">Modifier mon mot de passe</a>
+        </p>
+    </div>
