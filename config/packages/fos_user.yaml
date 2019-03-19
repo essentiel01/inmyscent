@@ -10,3 +10,7 @@ fos_user:
     registration:
         form:
             type: App\Form\RegistrationFormType
+    # use the custom ChangepasswordFormType instead the default
+    change_password:
+        form:
+            type: App\Form\ChangePasswordFormType

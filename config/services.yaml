@@ -45,3 +45,8 @@ services:
         class: App\Form\RegistrationFormType
         tags:
             - { name: form.type, alias: app_user_registration }
+    # custom change password form type for fosuserbundle
+    app.form.changepassword:
+        class: App\Form\ChangePasswordFormType
+        tags:
+            - { name: form.type, alias: fos_user_change_password }
