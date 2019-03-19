@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}In My Fragrance{% endblock %}</title>
         <!-- twiter bootstrap cdn -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         {# autocomplete css #}
@@ -12,11 +12,57 @@
 
     </head>
     <body>
-
         {% block body %}
-            {% block header %}{% endblock %}
+        <header>
+            {% block header %}
+                {% block topBar %}
+                    {% if app.user %}
+                        <div class="top-bar">
+                            <a title="retour sur le dashboard" href="{{ path('admin-index')}}">Dashboard</a>
+                            <a title="retour sur le dashboard" href="{{ path('home')}}">Voir le site</a>
+                            <div>
+                                <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
+                                <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+                {% block currentPageTitle %}{% endblock %}
+                {% block nav %}{% endblock %}
+                {% block flashBag %}
+                    {% if app.request.hasPreviousSession %}
+                        {% for type, messages in app.session.flashbag.all() %}
+                            {% for message in messages %}
+                                <div class="flash-{{ type }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                {% endblock %}
+            {% endblock %}
+        </header>
+        <main>
             {% block main %}{% endblock %}
-            {% block footer %}{% endblock %}
+        </main>
+        <footer>
+            {% block footer %}
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Comment ça marche?</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Nous contacter</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" title="connexion admin" href="{{ path('fos_user_security_login') }}">In side</a>
+                        </li>
+                    </ul> 
+                </nav>
+                <p>Copyright <a href="#">essentielDev</a></p>
+            {% endblock %}
+        </footer>
         {% endblock %}
 
         <!--cdn jquery + popper.js + bootstrap.min.js -->
