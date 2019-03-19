@@ -14,3 +14,7 @@ fos_user:
     change_password:
         form:
             type: App\Form\ChangePasswordFormType
+    # use the custom ProfileFormType instead the default
+    profile:
+        form:
+            type: App\Form\ProfileFormType

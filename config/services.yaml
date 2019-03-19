@@ -50,3 +50,8 @@ services:
         class: App\Form\ChangePasswordFormType
         tags:
             - { name: form.type, alias: fos_user_change_password }
+    # custom profile form type for fosuserbundle
+    app.form.profile:
+        class: App\Form\ProfileFormType
+        tags:
+            - { name: form.type, alias: fos_user_profile }
