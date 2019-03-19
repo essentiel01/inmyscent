@@ -1,0 +1,12 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block currentPageTitle %}
+    <h1>
+        Mot de passe oublié?
+    </h1>
+{% endblock %}
+{% block main %}
+    {% block fos_user_content %}
+        {% include "@FOSUser/Resetting/request_content.html.twig" %}
+    {% endblock fos_user_content %}
+{% endblock %}
