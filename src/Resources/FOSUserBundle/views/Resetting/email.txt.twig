@@ -1,13 +1,35 @@
 {% trans_default_domain 'FOSUserBundle' %}
 {% block subject %}
-{%- autoescape false -%}
-{{ 'resetting.email.subject'|trans({'%username%': user.username}) }}
-{%- endautoescape -%}
+    {%- autoescape false -%}
+        {# {{ 'resetting.email.subject'|trans({'%username%': user.username}) }} #}
+        Réinitialisation de votre mot de passe
+    {%- endautoescape -%}
 {% endblock %}
 
 {% block body_text %}
-{% autoescape false %}
-{{ 'resetting.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
-{% endautoescape %}
+    {% autoescape false %}
+        {# {{ 'resetting.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }} #}
+        Bonjour {{ user.username }},
+        Vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le lien ci-dessous pour réinitialiser votre motre mo de passe {{ confirmationUrl }}.
+        Si vous n'êtes pas à l'origine de cette demande vous pouvez ignorer ce message.
+
+        L'équipe InMyFragrance
+    {% endautoescape %}
 {% endblock %}
-{% block body_html %}{% endblock %}
+{% block body_html %}
+    <p>
+        Bonjour {{ user.username }},
+    </p>
+    <p>
+        Vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le lien ci-dessous pour réinitialiser votre motre mo de passe
+    </p>
+    <p>
+        <a title="réinitialiser le mot de passe" target="_blank" href="{{ confirmationUrl }}">Réinitialiser mon mot de passe</a>
+    </p>
+    <p>
+        Si vous n'êtes pas à l'origine de cette demande vous pouvez ignorer ce message.
+    </p>
+    <p>
+        L'équipe InMyFragrance
+    </p>
+{% endblock %}

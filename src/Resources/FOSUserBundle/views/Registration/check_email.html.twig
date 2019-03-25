@@ -1,7 +1,8 @@
 {% extends "@FOSUser/layout.html.twig" %}
 
-{% trans_default_domain 'FOSUserBundle' %}
 
 {% block fos_user_content %}
-    <p>{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
+    <p>Un mail de confirmation vous a été envoyé à l'adresse {{ user.email }}.</p>
+    <p>Vérifier vos messages et cliquer sur le lien d'activation afin de finaliser la création de votre compte.</p>
+    <p>Merci</p>
 {% endblock fos_user_content %}

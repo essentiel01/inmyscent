@@ -1,13 +1,22 @@
 {% trans_default_domain 'FOSUserBundle' %}
 {% block subject %}
 {%- autoescape false -%}
-{{ 'registration.email.subject'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+Confirmation de votre addresse email
 {%- endautoescape -%}
 {% endblock %}
 
 {% block body_text %}
 {% autoescape false %}
-{{ 'registration.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+Bonjour {{  user.username }},
+Votre compte sur InMyFragrance.com a été créé avec succès. Afin d'activer votre compte nous vous invitons à cliquer sur le lien ci-dessous: {{ confirmationUrl}}
+Cordialement
+
+L'équipe InMyFragrance
 {% endautoescape %}
 {% endblock %}
-{% block body_html %}{% endblock %}
+{% block body_html %}
+    <p> Bonjour {{  user.username }}, </p>
+    <p>Votre compte sur InMyFragrance.com a été créé avec succès. Afin d'activer votre compte nous vous invitons à cliquer sur le lien ci-dessous:</p>
+    <p><a href="{{ confirmationUrl}}">J'active mon compte</a></p>
+    <p>L'équipe InMyFragrance</p>
+{% endblock %}

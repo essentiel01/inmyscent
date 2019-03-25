@@ -3,15 +3,6 @@
         
         {% block main %}
             <div>
-                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    <p>Vous êtes déja connecté en tant que:</p> <span>{{ app.user.username }}</span>
-                {% else %}
-                    <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-                {% endif %}
-            </div>
-
-            
-            <div>
                 {% block fos_user_content %}
                 {% endblock fos_user_content %}
             </div>

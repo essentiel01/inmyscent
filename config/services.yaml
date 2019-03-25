@@ -55,3 +55,8 @@ services:
         class: App\Form\ProfileFormType
         tags:
             - { name: form.type, alias: fos_user_profile }
+    # custom resetting form type for fosuserbundle
+    app.form.resetting:
+        class: App\Form\ResettingFormType
+        tags:
+            - { name: form.type, alias: fos_user_resetting }

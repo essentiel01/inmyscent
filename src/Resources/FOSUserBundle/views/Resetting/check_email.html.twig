@@ -4,6 +4,7 @@
 
 {% block fos_user_content %}
 <p>
-{{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+    {# {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }} #}
+    Un email a été envoyé à l'adresse email associé à votre compte {{ app.request.query.get('username') }}
 </p>
 {% endblock %}

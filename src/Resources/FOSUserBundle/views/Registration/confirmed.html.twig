@@ -4,9 +4,9 @@
 
 {% block main %}
     {% block fos_user_content %}
-        <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
-        {% if targetUrl %}
+        <p>Votre compte {{ app.user.username }} a été activé avec succès</p>
+        {# {% if targetUrl %}
         <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
-        {% endif %}
+        {% endif %} #}
     {% endblock fos_user_content %}
 {% endblock %}
