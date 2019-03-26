@@ -8,6 +8,13 @@
 		<h1>
 			{{ title }}!
 		</h1>
+		{# formulaire d'inscription à la newsletter #}
+		<div>
+			{{ form_start(form, { 'action' : path('inscription-newsletter') }) }}
+			{{ form_widget(form) }}
+			{{ form_end(form) }}
+		</div>
+		
 	{% endblock %}
 
 	{% block nav %}
