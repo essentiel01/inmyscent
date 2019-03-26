@@ -40,4 +40,5 @@ security:
         - { path: ^/register/confirm, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: ROLE_ADMIN }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/admin, role: ROLE_ADMIN }
+        - { path: ^/users, role: ROLE_ADMIN }
