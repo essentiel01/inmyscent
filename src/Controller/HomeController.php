@@ -16,6 +16,11 @@ use App\Entity\Product;
 use App\Entity\NotFound;
 use Cocur\Slugify\Slugify;
 
+use App\Form\SubscritionFormType;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 // use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -40,8 +45,14 @@ class HomeController extends AbstractController
     public function index()
     {
         // $this->_cache->clear();
+
+        // formulaire d'inscription à la newsletter: à envoyer sur la page d'accueil
+        $form = $this->createForm(SubscritionFormType::class);
+           
         return $this->render('home/index.html.twig', [
-                    'title' => 'InMyScent'
+                    'title' => 'InMyScent',
+                    'form' => $form->createView(),
+
                     ]);
     }
 
