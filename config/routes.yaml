@@ -47,6 +47,11 @@ ajax-search-by-note:
   path: /searchByNote
   controller: App\Controller\HomeController::searchByNote
 
+
+inscription-newsletter:
+  path: /subscrition
+  controller: App\Controller\NewsletterController::subscrition
+
   # routes admin
 admin-index:
   path: /admin
