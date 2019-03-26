@@ -50,7 +50,7 @@ ajax-search-by-note:
 
 inscription-newsletter:
   path: /subscrition
-  controller: App\Controller\NewsletterController::subscrition
+  controller: App\Controller\NewsletterController::subscribe
 
   # routes admin
 admin-index:
