@@ -23,14 +23,6 @@ class SubscritionFormType extends AbstractType
             'label' => 'Email',
             'constraints' => array(new NotBlank())
         ))
-        ->add('sexe', ChoiceType::class, array(
-            'label' => 'Genre',
-            'choices' => array(
-                'Masculin' => 'm',
-                'Féminin' => 'f'
-            ),
-            'expanded' => true
-        ))
         ->add('save', SubmitType::class, ['label' => 'S\'inscrire']);
 
     }
