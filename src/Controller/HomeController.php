@@ -50,7 +50,7 @@ class HomeController extends AbstractController
         $form = $this->createForm(SubscritionFormType::class);
            
         return $this->render('home/index.html.twig', [
-                    'title' => 'InMyScent',
+                    'title' => 'InMyFragrance',
                     'form' => $form->createView(),
 
                     ]);
