@@ -21,6 +21,7 @@ class SubscritionFormType extends AbstractType
         $builder
         ->add('email', EmailType::class, array(
             'label' => 'Email',
+            'attr' => array('placeholder' => 'email'),
             'constraints' => array(new NotBlank())
         ))
         ->add('save', SubmitType::class, ['label' => 'S\'inscrire']);
