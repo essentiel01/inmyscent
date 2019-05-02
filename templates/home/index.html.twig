@@ -5,21 +5,26 @@
 	{% endblock %}
 	
 	{% block currentPageTitle %}
-		{# <h1>
-			{{ title }}!
-		</h1> #}
+	<div class="nwl-container">
+		<h2 class="nwl-title">Porfitez des offres promotionnelles de nos partenaires</h2>
 		{# formulaire d'inscription à la newsletter #}
-		<div>
+		<div class="nwl-form">
 			{{ form_start(form, { 'action' : path('inscription-newsletter') }) }}
-			{{ form_widget(form) }}
+			<div class="email">
+				{{ form_row(form.email) }}
+			</div>
+			<div class="submit">
+				{{ form_row(form.save) }}
+			</div>
+			{# {{ form_widget(form) }} #}
 			{{ form_end(form) }}
 		</div>
-		
+	</div>	
 	{% endblock %}
 
 	{% block nav %}
-		<nav>
-			<div class="nav nav-tabs" id="nav-tab" role="tablist">
+		<nav class="">
+			<div class="nav nav-tabs container" id="nav-tab" role="tablist">
 				<a class="nav-item nav-link active" id="nav-search-by-name-tab" data-toggle="tab" href="#nav-search-by-name" role="tab" aria-controls="nav-search-by-name" aria-selected="true">Search by name</a>
 				<a class="nav-item nav-link" id="nav-search-by-family-note-tab" data-toggle="tab" href="#nav-search-by-family-note" role="tab" aria-controls="nav-search-by-family-note" aria-selected="false">Search by family note</a>
 				<a class="nav-item nav-link" id="nav-search-by-note-tab" data-toggle="tab" href="#nav-search-by-note" role="tab" aria-controls="nav-search-by-note" aria-selected="false">Search by notes</a>
@@ -28,6 +33,7 @@
 	{% endblock %}
 
 	{% block main %}
+	<div class="container home-container">
 		<div class="tab-content container" id="nav-tabContent">
 			<div class="tab-pane fade show active" id="nav-search-by-name" role="tabpanel" aria-labelledby="nav-search-by-name-tab">
 				<div id="search-by-name">
@@ -90,4 +96,5 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	{% endblock %}
