@@ -13,8 +13,13 @@ body {
     font-size: 1.6rem;
 }
 
+/* taille de la police du contenu des inputs */
+input.form-control, button.btn {
+    font-size: 1.3rem;
+}
+
 header {
-    padding-top: 2rem;
+    padding-top: 1rem;
 }
 
 header .top-bar {
@@ -124,7 +129,8 @@ header .nav-link {
 }
 
 
-/* footer */
+/* footer ------------------------------
+----------------------------------------*/
 
 footer {
     height: 20vw;
@@ -148,7 +154,8 @@ footer .nav .nav-item .nav-link {
     background-color: #dadada;
 }
 
-/* login */
+/* login -------------------------
+----------------------------------*/
 
 .login-container {
     margin: 6rem auto;
@@ -169,4 +176,33 @@ footer .nav .nav-item .nav-link {
 
 .login-container form p {
     font-style: italic;
+}
+
+
+/* admin -----------------------------
+----------------------------------- */
+
+.dashboard-tittle {
+    text-transform: uppercase;
+    text-align: center;
+    width: 50%;
+    margin: auto;
+}
+
+.warning-message {
+    text-align: center;
+    font-style: italic;
+    width: 50%;
+    margin: auto;
+    font-size: 1.3rem;
+}
+
+.admin-email {
+    color: #71b8f7;
+}
+
+.nav-admin .nav-link {
+    background-color: #dadada;
+    color: #000;
+    border-right: 1px solid #000;
 }
