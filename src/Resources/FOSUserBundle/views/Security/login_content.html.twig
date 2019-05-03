@@ -1,6 +1,7 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% if is_granted(expression('is_anonymous()')) %}
+<div class="login-container container">
+    {% if is_granted(expression('is_anonymous()')) %}
     {% if error %}
         <div>Identifiant et/ou mot de passe incorrect</div>
     {% endif %}
@@ -24,16 +25,19 @@
             <label for="remember_me">Se souvenir de moi</label>
         </div>
 
-        <input type="submit" class="btn btn-primary" id="_submit" name="_submit" value="Connexion" /> 
+        <div class="submit">
+            <input type="submit" class="btn btn-primary" id="_submit" name="_submit" value="Connexion" /> 
+        </div>
         
+        <p>
+            <a href="{{ path('fos_user_resetting_request') }}" >Mot de passe oublié</a>
+        </p>
     </form>
 
-    <p>
-        <a href="{{ path('fos_user_resetting_request') }}" >Mot de passe oublié</a>
-    </p>
-{% else %}
-    <p>Vous êtes déja connecté en tant que:</p> <span>{{ app.user.username }}</span>
-{% endif %}
+    {% else %}
+        <p>Vous êtes déja connecté en tant que:</p> <span>{{ app.user.username }}</span>
+    {% endif %}
+</div>
 
 
 
