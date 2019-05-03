@@ -13,6 +13,24 @@ body {
     font-size: 1.6rem;
 }
 
+header {
+    padding-top: 2rem;
+}
+
+header .top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 1rem;
+    background-color: #3e3c3c;
+}
+
+header .top-bar a {
+    color: #dadada;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 1rem;
+}
+
 header .logo {
     display: inline-block;
     vertical-align: top;
@@ -24,6 +42,7 @@ header .logo {
 .logo h1 {
     letter-spacing: 2.4px;
     font-size: 4rem;
+    color: #fff;
 }
 
 .logo h1 .i {
@@ -40,6 +59,7 @@ header .logo {
 
 .logo .slogan {
     font-size: 1.5rem;
+    color: #fff;
 }
 
 .logo .com {
@@ -126,4 +146,27 @@ footer .nav .nav-item .nav-link {
     height: 1px;
     width: 100%;
     background-color: #dadada;
+}
+
+/* login */
+
+.login-container {
+    margin: 6rem auto;
+}
+
+.login-container form {
+    width: 20%;
+    margin: auto;
+    background-color: #dadada;
+    padding: 2rem;
+    min-width: 400px;
+    color: #000;
+}
+
+.login-container form .submit {
+    text-align: right;
+}
+
+.login-container form p {
+    font-style: italic;
 }
