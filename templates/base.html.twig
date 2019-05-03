@@ -20,20 +20,24 @@
                 {% block topBar %}
                     {% if app.user %}
                         <div class="top-bar">
-                            <a title="retour sur le dashboard" href="{{ path('admin-index')}}">Dashboard</a>
-                            <a title="retour sur le dashboard" href="{{ path('home')}}">Voir le site</a>
-                            <div>
+                            <div class="top-bar-nav">
+                                <a title="retour sur le dashboard" href="{{ path('admin-index')}}">Dashboard</a>
+                                <a title="retour sur le dashboard" href="{{ path('home')}}">Voir le site</a>                  
+                            </div>
+                            <div class="top-bar-user">
                                 <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
                                 <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
                             </div>
                         </div>
                     {% endif %}
                 {% endblock %}
-                <div class="logo">
-                    <h1><span class="i">I</span>n<span class="m">M</span>y<span class="f">F</span>ragrance</h1>
-                    <p class="slogan">Trouver le parfum qui vous convient</p>
-                    <small class="com">.com</small>
-                </div>
+                <a href="{{ path('home') }}">
+                    <div class="logo">
+                        <h1><span class="i">I</span>n<span class="m">M</span>y<span class="f">F</span>ragrance</h1>
+                        <p class="slogan">Trouver le parfum qui vous convient</p>
+                        <small class="com">.com</small>
+                    </div>
+                </a>
                 {% block currentPageTitle %}{% endblock %}
                 {% block nav %}{% endblock %}
                 {% block flashBag %}
@@ -52,7 +56,7 @@
         <main>
             {% block main %}{% endblock %}
         </main>
-        <footer class="footer">
+        <footer class="footer container">
             {% block footer %}
                 <nav class="footer-nav">
                     <ul class="nav">
