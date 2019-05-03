@@ -3,18 +3,18 @@
        
 
         {% block currentPageTitle %}
-            <h1>
+            <h1 class="dashboard-tittle">
                 {{ title }}
             </h1>
-            <p>
+            <p class="warning-message">
                 {{ warning }}
-                <span> {{ admin }} </span>
+                <span class="admin-email"> {{ admin }} </span>
             </p>
         {% endblock %}
 
     {% block nav %}
         <div>
-            <ul class="nav justify-content-center">
+            <ul class="nav nav-admin justify-content-center">
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ path('brand_index') }}">Les marques</a>
                 </li>
