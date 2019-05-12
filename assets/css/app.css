@@ -276,3 +276,20 @@ footer .nav .nav-item .nav-link {
 .user-container {
     width: 50%;
 }
+
+.user-container .username {
+    margin-left: 2rem;
+}
+
+.user-container .useremail {
+    margin-left: 4rem;
+}
+
+.user-container .userrole {
+    margin-left: 11rem;
+}
+
+.user-container .btn-submit {
+    margin-top: 3rem;
+    text-align: center;
+}

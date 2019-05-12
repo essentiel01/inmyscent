@@ -2,20 +2,22 @@
 {# <pre>
     {{ dump(app.session.flashbag.all()) }}
 </pre> #}
-    <div class="fos_user_user_show">
+    <div class="container user-container fos_user_user_show">
         <p>
-            Nom d'utilisateur: {{ user.username }}
+            Nom d'utilisateur: <span class="username">{{ user.username }}</soan>
         </p>
         <p>
-            Adresse email: {{ user.email }}
+            Adresse email: <span class="useremail">{{ user.email }}</soan>
         </p>
         <p>
             Rôle: 
+            <span class="userrole">
             {% for role in user.roles %}
                 {{ role }}
             {% endfor %}
+            </span>
         </p>
-        <p>
+        <p class="btn-submit">
             <a class="btn btn-primary" title="modifier le profil" href="{{ path('fos_user_profile_edit') }}">Modifier mon profil</a>
             <a class="btn btn-primary" title="modifier le mot de passe" href="{{ path('fos_user_change_password') }}">Modifier mon mot de passe</a>
 
