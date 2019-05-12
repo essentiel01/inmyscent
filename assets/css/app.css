@@ -13,8 +13,21 @@ body {
     font-size: 1.6rem;
 }
 
+.btn-submit button, .btn-submit input {
+    width: 100%;
+}
+
+.btn-delete button {
+    margin: 1rem 0;
+}
+
 /* taille de la police du contenu des inputs */
-input.form-control, button.btn {
+input.form-control, select.form-control {
+    font-size: 1.5rem;
+    height: calc(2.25rem + 5px);
+}
+
+.btn {
     font-size: 1.3rem;
 }
 
@@ -26,7 +39,6 @@ header .top-bar {
     display: flex;
     justify-content: space-between;
     padding: 2px 1rem;
-    background-color: #3e3c3c;
 }
 
 header .top-bar a {
@@ -178,6 +190,13 @@ footer .nav .nav-item .nav-link {
     font-style: italic;
 }
 
+.login-container p {
+    text-align: center;
+}
+
+.login-container p span {
+    color: #71b8f7;
+}
 
 /* admin -----------------------------
 ----------------------------------- */
@@ -202,7 +221,58 @@ footer .nav .nav-item .nav-link {
 }
 
 .nav-admin .nav-link {
-    background-color: #dadada;
+    background-color: #dadada; 
     color: #000;
     border-right: 1px solid #000;
+}
+
+/* brand */
+
+.brand-container .btn-create {
+    display: flex;
+    margin: 2rem 0;
+}
+
+.brand-container.form {
+    width: 50%;
+}
+
+.btn-create h1 {
+    margin-right: 2rem;
+}
+
+.delete-form form {
+    text-align: right;
+} 
+
+/* product */
+
+.product-container.index {
+    margin: 0 1rem;
+}
+
+.product-container .btn-create {
+    display: flex;
+    margin: 2rem 0;
+}
+
+.product-container.form {
+    width: 50%;
+    margin: auto;
+}
+
+.product-container .btn-submit {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+/* user */
+
+.user-container .btn-create {
+    display: flex;
+    margin: 2rem 0;
+}
+
+.user-container {
+    width: 50%;
 }
