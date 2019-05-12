@@ -2,10 +2,12 @@
 
 {% block title %}New Product{% endblock %}
 
-{% block body %}
-    <h1>Create new Product</h1>
-
+{% block main %}
+<div class="container product-container form">
+    <div class="btn-create">
+        <h1>Créer un nouveau parfum</h1>
+        <a class="btn btn-secondary" href="{{ path('product_index') }}">Retour à la liste</a>
+    </div>
     {{ include('product/_form.html.twig') }}
-
-    <a href="{{ path('product_index') }}">back to list</a>
+</div>
 {% endblock %}

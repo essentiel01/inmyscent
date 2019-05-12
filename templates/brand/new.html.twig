@@ -2,10 +2,15 @@
 
 {% block title %}New Brand{% endblock %}
 
-{% block body %}
-    <h1>Create new Brand</h1>
+{% block main %}
+    <div class="container brand-container form">
+        <div class="btn-create">
+            <h1>Créer une nouvelle marque</h1>
+            <a class="btn btn-secondary" href="{{ path('brand_index') }}">Retour à la liste</a>
+        </div>
 
-    {{ include('brand/_form.html.twig') }}
+        {{ include('brand/_form.html.twig') }}
 
-    <a href="{{ path('brand_index') }}">back to list</a>
+
+    </div>
 {% endblock %}
