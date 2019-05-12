@@ -2,12 +2,17 @@
 
 {% block title %}Edit Product{% endblock %}
 
-{% block body %}
-    <h1>Edit Product</h1>
+{% block main %}
+    <div class="container product-container form">
+        <div class="btn-create">
+            <h1>Modifier le parfum</h1>
+            <a class="btn btn-secondary" href="{{ path('product_index') }}">Retour à la liste</a>
+        </div>
 
-    {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('product_index') }}">back to list</a>
 
-    {{ include('product/_delete_form.html.twig') }}
+        {{ include('product/_delete_form.html.twig') }}
+
+    </div>
 {% endblock %}

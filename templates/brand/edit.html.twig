@@ -2,12 +2,16 @@
 
 {% block title %}Edit Brand{% endblock %}
 
-{% block body %}
-    <h1>Edit Brand</h1>
+{% block main %}
+    <div class="container brand-container form">
+        <div class="btn-create">
+            <h1>Modifier la marque</h1>
+            <a class="btn btn-secondary" href="{{ path('brand_index') }}">Retour à la liste</a>
+        </div>
 
-    {{ include('brand/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('brand/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    <a href="{{ path('brand_index') }}">back to list</a>
 
-    {{ include('brand/_delete_form.html.twig') }}
+        {{ include('brand/_delete_form.html.twig') }}
+    </div>
 {% endblock %}
