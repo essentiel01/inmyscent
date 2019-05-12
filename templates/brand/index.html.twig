@@ -2,9 +2,12 @@
 
 {% block title %}Brand index{% endblock %}
 
-{% block body %}
-    <h1>Brand index</h1>
-
+{% block main %}
+<div class="container brand-container">
+    <div class="btn-create">
+        <h1>Liste des marques</h1>
+        <a class="btn btn-primary" href="{{ path('brand_new') }}">Ajouter une marque</a>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -19,8 +22,8 @@
                 <td>{{ brand.id }}</td>
                 <td>{{ brand.name }}</td>
                 <td>
-                    <a href="{{ path('brand_show', {'id': brand.id}) }}">show</a>
-                    <a href="{{ path('brand_edit', {'id': brand.id}) }}">edit</a>
+                    <a class="btn btn-info" href="{{ path('brand_show', {'id': brand.id}) }}">Afficher</a>
+                    <a class="btn btn-warning" href="{{ path('brand_edit', {'id': brand.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +34,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('brand_new') }}">Create new</a>
+</div>
 {% endblock %}
